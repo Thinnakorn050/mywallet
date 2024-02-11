@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mywallet/History.dart';
-import 'package:mywallet/Profile.dart';
-import 'Dashboard.dart';
-import 'Home.dart';
+import 'package:mywallet/pages/History.dart';
+import 'package:mywallet/pages/Profile.dart';
+import 'pages/Dashboard.dart';
+import 'pages/Home.dart';
 
 class Material3BottomNav extends StatefulWidget {
   const Material3BottomNav({Key? key}) : super(key: key);
