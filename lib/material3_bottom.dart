@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mywallet/pages/History.dart';
 import 'package:mywallet/pages/Profile.dart';
+
 import 'pages/Dashboard.dart';
-import 'pages/Home.dart';
+import 'pages/HomePage.dart';
 
 class Material3BottomNav extends StatefulWidget {
   const Material3BottomNav({Key? key}) : super(key: key);
@@ -53,7 +54,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Home(),
+      body: HomePage(),
     );
   }
 }
