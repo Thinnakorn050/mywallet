@@ -1,5 +1,5 @@
-import 'package:mywallet/models/income.dart';
-import 'package:mywallet/models/payment.dart';
+import 'package:mywallet/models/Transaction.dart';
+import 'package:mywallet/models/account.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -40,16 +40,16 @@ class DatabaseService {
   Future<void> _onCreate(Database db, int version) async {
     // Run the CREATE {breeds} TABLE statement on the database.
     await db.execute(
-      'CREATE TABLE breeds(id INTEGER PRIMARY KEY, name TEXT, description TEXT)',
+      'CREATE TABLE accounts(id INTEGER PRIMARY KEY, name TEXT)',
     );
     // Run the CREATE {dogs} TABLE statement on the database.
     await db.execute(
-      'CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER, color INTEGER, breedId INTEGER, FOREIGN KEY (breedId) REFERENCES breeds(id) ON DELETE SET NULL)',
+      'CREATE TABLE transactions(id INTEGER PRIMARY KEY, money INTEGER, category INTEGER, date TEXT, memo TEXT, FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE SET NULL)',
     );
   }
 
   // Define a function that inserts breeds into the database
-  Future<void> insertPayment(Payment payment) async {
+  Future<void> insertAccount(Account account) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
@@ -58,76 +58,77 @@ class DatabaseService {
     //
     // In this case, replace any previous data.
     await db.insert(
-      'payments',
-      payment.toMap(),
+      'accounts',
+      account.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<void> insertIncome(Income income) async {
+  Future<void> insertTransaction(Transaction transaction) async {
     final db = await _databaseService.database;
     await db.insert(
-      'incomes',
-      income.toMap(),
+      'transactions',
+      transaction.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   // A method that retrieves all the breeds from the breeds table.
-  Future<List<Payment>> payments() async {
+  Future<List<Account>> accounts() async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
     // Query the table for all the Breeds.
-    final List<Map<String, dynamic>> maps = await db.query('payments');
+    final List<Map<String, dynamic>> maps = await db.query('accounts');
 
     // Convert the List<Map<String, dynamic> into a List<Breed>.
-    return List.generate(maps.length, (index) => Payment.fromMap(maps[index]));
+    return List.generate(maps.length, (index) => Account.fromMap(maps[index]));
   }
 
-  Future<Payment> payment(int id) async {
+  Future<Account> account(int id) async {
     final db = await _databaseService.database;
     final List<Map<String, dynamic>> maps =
-        await db.query('payments', where: 'id = ?', whereArgs: [id]);
-    return Payment.fromMap(maps[0]);
+        await db.query('accounts', where: 'id = ?', whereArgs: [id]);
+    return Account.fromMap(maps[0]);
   }
 
-  Future<List<Income>> incomes() async {
+  Future<List<Transaction>> transactions() async {
     final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps = await db.query('dogs');
-    return List.generate(maps.length, (index) => Income.fromMap(maps[index]));
+    final List<Map<String, dynamic>> maps = await db.query('transactions');
+    return List.generate(
+        maps.length, (index) => Transaction.fromMap(maps[index]));
   }
 
   // A method that updates a breed data from the breeds table.
-  Future<void> updatePayment(Payment payment) async {
+  Future<void> updateAccount(Account account) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
     // Update the given breed
     await db.update(
-      'payments',
-      payment.toMap(),
+      'accounts',
+      account.toMap(),
       // Ensure that the Breed has a matching id.
       where: 'id = ?',
       // Pass the Breed's id as a whereArg to prevent SQL injection.
-      whereArgs: [payment.id],
+      whereArgs: [account.id],
     );
   }
 
-  Future<void> updateIncome(Income income) async {
+  Future<void> updateTransaction(Transaction transaction) async {
     final db = await _databaseService.database;
-    await db.update('dogs', income.toMap(),
-        where: 'id = ?', whereArgs: [income.id]);
+    await db.update('transactions', transaction.toMap(),
+        where: 'id = ?', whereArgs: [transaction.id]);
   }
 
   // A method that deletes a breed data from the breeds table.
-  Future<void> deletePayment(int id) async {
+  Future<void> deleteAccount(int id) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
     // Remove the Breed from the database.
     await db.delete(
-      'payments',
+      'accounts',
       // Use a `where` clause to delete a specific breed.
       where: 'id = ?',
       // Pass the Breed's id as a whereArg to prevent SQL injection.
@@ -135,8 +136,8 @@ class DatabaseService {
     );
   }
 
-  Future<void> deleteIncome(int id) async {
+  Future<void> deleteTransaction(int id) async {
     final db = await _databaseService.database;
-    await db.delete('incomes', where: 'id = ?', whereArgs: [id]);
+    await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
   }
 }

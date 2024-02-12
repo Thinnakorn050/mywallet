@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mywallet/models/income.dart';
+import 'package:mywallet/models/transaction.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class IncomeBuilder extends StatelessWidget {

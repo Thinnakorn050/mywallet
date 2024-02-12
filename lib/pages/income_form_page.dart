@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mywallet/common_widgets/age_slider.dart';
 import 'package:mywallet/common_widgets/color_picker.dart';
 import 'package:mywallet/common_widgets/payment_selector.dart';
-import 'package:mywallet/models/income.dart';
-import 'package:mywallet/models/payment.dart';
+import 'package:mywallet/models/transaction.dart';
+import 'package:mywallet/models/account.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class IncomeFormPage extends StatefulWidget {

@@ -1,14 +1,12 @@
 import 'dart:convert';
 
-class Payment {
+class Category {
   final int? id;
   final String name;
-  final String description;
 
-  Payment({
+  Category({
     this.id,
     required this.name,
-    required this.description,
   });
   // Convert a Breed into a Map. The keys must correspond to the names of the
   // columns in the database.
@@ -16,26 +14,23 @@ class Payment {
     return {
       'id': id,
       'name': name,
-      'description': description,
     };
   }
 
-  factory Payment.fromMap(Map<String, dynamic> map) {
-    return Payment(
+  factory Category.fromMap(Map<String, dynamic> map) {
+    return Category(
       id: map['id']?.toInt() ?? 0,
       name: map['name'] ?? '',
-      description: map['description'] ?? '',
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Payment.fromJson(String source) =>
-      Payment.fromMap(json.decode(source));
+  factory Category.fromJson(String source) =>
+      Category.fromMap(json.decode(source));
 
   // Implement toString to make it easier to see information about
   // each breed when using the print statement.
   @override
-  String toString() =>
-      'Payment(id: $id, name: $name, description: $description)';
+  String toString() => 'Category(id: $id, name: $name)';
 }

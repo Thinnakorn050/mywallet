@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mywallet/models/payment.dart';
+import 'package:mywallet/models/account.dart';
 
 class PaymentBuilder extends StatelessWidget {
   const PaymentBuilder({

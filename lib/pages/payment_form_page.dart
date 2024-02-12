@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mywallet/models/payment.dart';
+import 'package:mywallet/models/account.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class PaymentFormPage extends StatefulWidget {
