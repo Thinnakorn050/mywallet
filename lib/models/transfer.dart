@@ -1,20 +1,22 @@
+// ignore_for_file: camel_case_types
+
 import 'dart:convert';
 
-class Tran {
+class Transfer {
   final int? id;
   final int money;
-  final int category;
   final DateTime date;
   final String memo;
   final int accountId;
+  final int categoryId;
 
-  Tran({
+  Transfer({
     this.id,
     required this.money,
-    required this.category,
     required this.date,
     required this.memo,
     required this.accountId,
+    required this.categoryId,
   });
 
   // Convert a Dog into a Map. The keys must correspond to the names of the
@@ -23,32 +25,33 @@ class Tran {
     return {
       'id': id,
       'money': money,
-      'category': category,
-      'date': date,
+      'date': date.toString(),
       'memo': memo,
       'account': accountId,
+      'category': categoryId,
     };
   }
 
-  factory Tran.fromMap(Map<String, dynamic> map) {
-    return Tran(
+  factory Transfer.fromMap(Map<String, dynamic> map) {
+    return Transfer(
       id: map['id']?.toInt() ?? 0,
       money: map['money']?.toInt() ?? 0,
-      category: map['category']?.toInt() ?? 0,
-      date: map['date'],
-      memo: map['memo']?.toInt() ?? 0,
+      date: DateTime.parse(map['date']),
+      memo: map['memo'] ?? '',
       accountId: map['accountId']?.toInt() ?? 0,
+      categoryId: map['categoryId']?.toInt() ?? 0,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Tran.fromJson(String source) => Tran.fromMap(json.decode(source));
+  factory Transfer.fromJson(String source) =>
+      Transfer.fromMap(json.decode(source));
 
   // Implement toString to make it easier to see information about
   // each dog when using the print statement.
   @override
   String toString() {
-    return 'Tran(id: $id, money: $money, category: $category, date: $date, memo: $memo, account $accountId)';
+    return 'transfer(id: $id, money: $money,  date: $date, memo: $memo, accountId $accountId, categoryId: $categoryId)';
   }
 }

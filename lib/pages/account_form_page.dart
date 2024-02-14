@@ -11,8 +11,6 @@ class AccountFormPage extends StatefulWidget {
 
 class _AccountFormPageState extends State<AccountFormPage> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
-
   final DatabaseService _databaseService = DatabaseService();
 
   Future<void> _onSave() async {
@@ -39,15 +37,6 @@ class _AccountFormPageState extends State<AccountFormPage> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Enter name of the Account here',
-              ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _descController,
-              maxLines: 7,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter description about the Account here',
               ),
             ),
             SizedBox(height: 16.0),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mywallet/common_widgets/payment_selector.dart';
 import 'package:mywallet/models/account.dart';
-import 'package:mywallet/models/tran.dart';
+import 'package:mywallet/models/transfer.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class TranFormPage extends StatefulWidget {
   const TranFormPage({Key? key, this.tran}) : super(key: key);
-  final Tran? tran;
+  final Transfer? tran;
 
   @override
   _TranFormPageState createState() => _TranFormPageState();
@@ -37,7 +37,7 @@ class _TranFormPageState extends State<TranFormPage> {
   }
 
   Future<List<Account>> _getAccounts() async {
-    final accounts = await _databaseService.accounts();
+    final accounts = await _databaseService.accountAll();
     if (_accounts.isEmpty) _accounts.addAll(accounts);
     if (widget.tran != null) {
       _selectedAccount =
@@ -56,20 +56,20 @@ class _TranFormPageState extends State<TranFormPage> {
     final memo = "SomeMemo"; // Replace with your actual value
 
     widget.tran == null
-        ? await _databaseService.insertTran(
-            Tran(
+        ? await _databaseService.insertTranfer(
+            Transfer(
               money: money,
-              category: category,
+              categoryId: category,
               date: date,
               memo: memo,
               accountId: account.id!,
             ),
           )
         : await _databaseService.updateTran(
-            Tran(
+            Transfer(
               id: widget.tran!.id,
               money: money,
-              category: category,
+              categoryId: category,
               date: date,
               memo: memo,
               accountId: account.id!,

@@ -1,3 +1,6 @@
 {
-    "cmake.sourceDirectory": "D:/wallet/mywallet/linux"
+    "cmake.sourceDirectory": "D:/wallet/mywallet/linux",
+    "cSpell.words": [
+        "tranfer"
+    ]
 }

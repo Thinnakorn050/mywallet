@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mywallet/models/tran.dart';
+import 'package:mywallet/models/transfer.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class TranBuilder extends StatelessWidget {
@@ -10,19 +10,19 @@ class TranBuilder extends StatelessWidget {
     required this.onEdit,
     required this.onDelete,
   }) : super(key: key);
-  final Future<List<Tran>> future;
-  final Function(Tran) onEdit;
-  final Function(Tran) onDelete;
+  final Future<List<Transfer>> future;
+  final Function(Transfer) onEdit;
+  final Function(Transfer) onDelete;
 
   Future<String> getAccountName(int id) async {
     final DatabaseService _databaseService = DatabaseService();
-    final account = await _databaseService.account(id);
+    final account = await _databaseService.accountOne(id);
     return account.name;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Tran>>(
+    return FutureBuilder<List<Transfer>>(
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -44,7 +44,7 @@ class TranBuilder extends StatelessWidget {
     );
   }
 
-  Widget _buildTranCard(Tran tran, BuildContext context) {
+  Widget _buildTranCard(Transfer tran, BuildContext context) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -82,7 +82,7 @@ class TranBuilder extends StatelessWidget {
                   SizedBox(height: 4.0),
                   Row(
                     children: [
-                      Text('category: ${tran.category.toString()} '),
+                      Text('category: ${tran.categoryId.toString()} '),
                       Container(
                         height: 15.0,
                         width: 15.0,

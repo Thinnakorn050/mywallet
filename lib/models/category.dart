@@ -32,5 +32,5 @@ class Category {
   // Implement toString to make it easier to see information about
   // each breed when using the print statement.
   @override
-  String toString() => 'Category(id: $id, name: $name)';
+  String toString() => 'category(id: $id, name: $name)';
 }

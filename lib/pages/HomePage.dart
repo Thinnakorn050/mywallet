@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mywallet/common_widgets/account_builder.dart';
 import 'package:mywallet/common_widgets/tran_builder.dart';
 import 'package:mywallet/models/account.dart';
-import 'package:mywallet/models/tran.dart';
+import 'package:mywallet/models/transfer.dart';
 import 'package:mywallet/pages/account_form_page.dart';
 import 'package:mywallet/pages/tran_form_page.dart';
 import 'package:mywallet/services/database_service.dart';
@@ -18,15 +18,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final DatabaseService _databaseService = DatabaseService();
 
-  Future<List<Tran>> _getIncomes() async {
-    return await _databaseService.trans();
+  Future<List<Transfer>> _getIncomes() async {
+    return await _databaseService.tranferAll();
   }
 
   Future<List<Account>> _getBreeds() async {
-    return await _databaseService.accounts();
+    return await _databaseService.accountAll();
   }
 
-  Future<void> _onIncomeDelete(Tran tran) async {
+  Future<void> _onIncomeDelete(Transfer tran) async {
     await _databaseService.deleteTran(tran.id!);
     setState(() {});
   }
