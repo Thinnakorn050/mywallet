@@ -1,5 +1,6 @@
-import 'package:mywallet/models/Transaction.dart';
 import 'package:mywallet/models/account.dart';
+import 'package:mywallet/models/category.dart';
+import 'package:mywallet/models/tran.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -42,9 +43,13 @@ class DatabaseService {
     await db.execute(
       'CREATE TABLE accounts(id INTEGER PRIMARY KEY, name TEXT)',
     );
+
+    await db.execute(
+      'CREATE TABLE categorys(id INTEGER PRIMARY KEY, name TEXT)',
+    );
     // Run the CREATE {dogs} TABLE statement on the database.
     await db.execute(
-      'CREATE TABLE transactions(id INTEGER PRIMARY KEY, money INTEGER, category INTEGER, date TEXT, memo TEXT, FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE SET NULL)',
+      'CREATE TABLE transactions(id INTEGER PRIMARY KEY, money INTEGER, FOREIGN KEY (categoryId) REFERENCES categorys(id), date DateTime, memo TEXT ,accountId INTEGER, FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE SET NULL)',
     );
   }
 
@@ -64,11 +69,21 @@ class DatabaseService {
     );
   }
 
-  Future<void> insertTransaction(Transaction transaction) async {
+  Future<void> insertCategory(Category category) async {
+    // Get a reference to the database.
     final db = await _databaseService.database;
     await db.insert(
-      'transactions',
-      transaction.toMap(),
+      'categorys',
+      category.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> insertTran(Tran tran) async {
+    final db = await _databaseService.database;
+    await db.insert(
+      'trans',
+      tran.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -92,11 +107,28 @@ class DatabaseService {
     return Account.fromMap(maps[0]);
   }
 
-  Future<List<Transaction>> transactions() async {
+  Future<List<Category>> categorys() async {
+    // Get a reference to the database.
     final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps = await db.query('transactions');
-    return List.generate(
-        maps.length, (index) => Transaction.fromMap(maps[index]));
+
+    // Query the table for all the Breeds.
+    final List<Map<String, dynamic>> maps = await db.query('categorys');
+
+    // Convert the List<Map<String, dynamic> into a List<Breed>.
+    return List.generate(maps.length, (index) => Category.fromMap(maps[index]));
+  }
+
+  Future<Category> category(int id) async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('categorys', where: 'id = ?', whereArgs: [id]);
+    return Category.fromMap(maps[0]);
+  }
+
+  Future<List<Tran>> trans() async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps = await db.query('trans');
+    return List.generate(maps.length, (index) => Tran.fromMap(maps[index]));
   }
 
   // A method that updates a breed data from the breeds table.
@@ -115,10 +147,26 @@ class DatabaseService {
     );
   }
 
-  Future<void> updateTransaction(Transaction transaction) async {
+  // A method that updates a breed data from the breeds table.
+  Future<void> updateCategory(Category category) async {
+    // Get a reference to the database.
     final db = await _databaseService.database;
-    await db.update('transactions', transaction.toMap(),
-        where: 'id = ?', whereArgs: [transaction.id]);
+
+    // Update the given breed
+    await db.update(
+      'categorys',
+      category.toMap(),
+      // Ensure that the Breed has a matching id.
+      where: 'id = ?',
+      // Pass the Breed's id as a whereArg to prevent SQL injection.
+      whereArgs: [category.id],
+    );
+  }
+
+  Future<void> updateTran(Tran tran) async {
+    final db = await _databaseService.database;
+    await db
+        .update('trans', tran.toMap(), where: 'id = ?', whereArgs: [tran.id]);
   }
 
   // A method that deletes a breed data from the breeds table.
@@ -136,8 +184,8 @@ class DatabaseService {
     );
   }
 
-  Future<void> deleteTransaction(int id) async {
+  Future<void> deleteTran(int id) async {
     final db = await _databaseService.database;
-    await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
+    await db.delete('trans', where: 'id = ?', whereArgs: [id]);
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mywallet/common_widgets/income_builder.dart';
-import 'package:mywallet/common_widgets/payment_builder.dart';
-import 'package:mywallet/models/transaction.dart';
+import 'package:mywallet/common_widgets/account_builder.dart';
+import 'package:mywallet/common_widgets/tran_builder.dart';
 import 'package:mywallet/models/account.dart';
-import 'package:mywallet/pages/income_form_page.dart';
-import 'package:mywallet/pages/payment_form_page.dart';
+import 'package:mywallet/models/tran.dart';
+import 'package:mywallet/pages/account_form_page.dart';
+import 'package:mywallet/pages/tran_form_page.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,16 +18,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final DatabaseService _databaseService = DatabaseService();
 
-  Future<List<Income>> _getIncomes() async {
-    return await _databaseService.incomes();
+  Future<List<Tran>> _getIncomes() async {
+    return await _databaseService.trans();
   }
 
-  Future<List<Payment>> _getBreeds() async {
-    return await _databaseService.payments();
+  Future<List<Account>> _getBreeds() async {
+    return await _databaseService.accounts();
   }
 
-  Future<void> _onIncomeDelete(Income income) async {
-    await _databaseService.deleteIncome(income.id!);
+  Future<void> _onIncomeDelete(Tran tran) async {
+    await _databaseService.deleteTran(tran.id!);
     setState(() {});
   }
 
@@ -37,31 +37,31 @@ class _HomePageState extends State<HomePage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Income Database'),
+          title: Text('Tran Database'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('Incomes'),
+                child: Text('Trans'),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('Payment'),
+                child: Text('Account'),
               ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            IncomeBuilder(
+            TranBuilder(
               future: _getIncomes(),
               onEdit: (value) {
                 {
                   Navigator.of(context)
                       .push(
                         MaterialPageRoute(
-                          builder: (_) => IncomeFormPage(income: value),
+                          builder: (_) => TranFormPage(tran: value),
                           fullscreenDialog: true,
                         ),
                       )
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
               },
               onDelete: _onIncomeDelete,
             ),
-            PaymentBuilder(
+            AccountBuilder(
               future: _getBreeds(),
             ),
           ],
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context)
                     .push(
                       MaterialPageRoute(
-                        builder: (_) => PaymentFormPage(),
+                        builder: (_) => AccountFormPage(),
                         fullscreenDialog: true,
                       ),
                     )
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context)
                     .push(
                       MaterialPageRoute(
-                        builder: (_) => IncomeFormPage(),
+                        builder: (_) => TranFormPage(),
                         fullscreenDialog: true,
                       ),
                     )

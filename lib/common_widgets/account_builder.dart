@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mywallet/models/account.dart';
 
-class PaymentBuilder extends StatelessWidget {
-  const PaymentBuilder({
+class AccountBuilder extends StatelessWidget {
+  const AccountBuilder({
     Key? key,
     required this.future,
   }) : super(key: key);
-  final Future<List<Payment>> future;
+  final Future<List<Account>> future;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Payment>>(
+    return FutureBuilder<List<Account>>(
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -23,8 +23,8 @@ class PaymentBuilder extends StatelessWidget {
           child: ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              final payment = snapshot.data![index];
-              return _buildPaymentCard(payment, context);
+              final account = snapshot.data![index];
+              return _buildAccountCard(account, context);
             },
           ),
         );
@@ -32,7 +32,7 @@ class PaymentBuilder extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentCard(Payment payment, BuildContext context) {
+  Widget _buildAccountCard(Account account, BuildContext context) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -47,7 +47,7 @@ class PaymentBuilder extends StatelessWidget {
               ),
               alignment: Alignment.center,
               child: Text(
-                payment.id.toString(),
+                account.id.toString(),
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -60,14 +60,12 @@ class PaymentBuilder extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    payment.name,
+                    account.name,
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 4.0),
-                  Text(payment.description),
                 ],
               ),
             ),

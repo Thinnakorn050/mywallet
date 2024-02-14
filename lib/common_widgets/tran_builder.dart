@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mywallet/models/transaction.dart';
+import 'package:mywallet/models/tran.dart';
 import 'package:mywallet/services/database_service.dart';
 
-class IncomeBuilder extends StatelessWidget {
-  const IncomeBuilder({
+class TranBuilder extends StatelessWidget {
+  const TranBuilder({
     Key? key,
     required this.future,
     required this.onEdit,
     required this.onDelete,
   }) : super(key: key);
-  final Future<List<Income>> future;
-  final Function(Income) onEdit;
-  final Function(Income) onDelete;
+  final Future<List<Tran>> future;
+  final Function(Tran) onEdit;
+  final Function(Tran) onDelete;
 
-  Future<String> getPaymentName(int id) async {
+  Future<String> getAccountName(int id) async {
     final DatabaseService _databaseService = DatabaseService();
-    final payment = await _databaseService.payment(id);
-    return payment.name;
+    final account = await _databaseService.account(id);
+    return account.name;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Income>>(
+    return FutureBuilder<List<Tran>>(
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -35,8 +35,8 @@ class IncomeBuilder extends StatelessWidget {
           child: ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              final income = snapshot.data![index];
-              return _buildIncomeCard(income, context);
+              final tran = snapshot.data![index];
+              return _buildTranCard(tran, context);
             },
           ),
         );
@@ -44,7 +44,7 @@ class IncomeBuilder extends StatelessWidget {
     );
   }
 
-  Widget _buildIncomeCard(Income income, BuildContext context) {
+  Widget _buildTranCard(Tran tran, BuildContext context) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -66,7 +66,7 @@ class IncomeBuilder extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    income.name,
+                    'money: ${tran.money.toString()} ',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
@@ -74,21 +74,20 @@ class IncomeBuilder extends StatelessWidget {
                   ),
                   SizedBox(height: 4.0),
                   FutureBuilder<String>(
-                    future: getPaymentName(income.paymentId),
+                    future: getAccountName(tran.accountId),
                     builder: (context, snapshot) {
-                      return Text('Payment: ${snapshot.data}');
+                      return Text('Account: ${snapshot.data}');
                     },
                   ),
                   SizedBox(height: 4.0),
                   Row(
                     children: [
-                      Text('Age: ${income.age.toString()}, Color: '),
+                      Text('category: ${tran.category.toString()} '),
                       Container(
                         height: 15.0,
                         width: 15.0,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4.0),
-                          color: income.color,
                           border: Border.all(
                             color: Colors.black,
                             width: 1.5,
@@ -102,7 +101,7 @@ class IncomeBuilder extends StatelessWidget {
             ),
             SizedBox(width: 20.0),
             GestureDetector(
-              onTap: () => onEdit(income),
+              onTap: () => onEdit(tran),
               child: Container(
                 height: 40.0,
                 width: 40.0,
@@ -116,7 +115,7 @@ class IncomeBuilder extends StatelessWidget {
             ),
             SizedBox(width: 20.0),
             GestureDetector(
-              onTap: () => onDelete(income),
+              onTap: () => onDelete(tran),
               child: Container(
                 height: 40.0,
                 width: 40.0,

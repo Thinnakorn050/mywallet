@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mywallet/models/account.dart';
 import 'package:mywallet/services/database_service.dart';
 
-class PaymentFormPage extends StatefulWidget {
-  const PaymentFormPage({Key? key}) : super(key: key);
+class AccountFormPage extends StatefulWidget {
+  const AccountFormPage({Key? key}) : super(key: key);
 
   @override
-  _PaymentFormPageState createState() => _PaymentFormPageState();
+  _AccountFormPageState createState() => _AccountFormPageState();
 }
 
-class _PaymentFormPageState extends State<PaymentFormPage> {
+class _AccountFormPageState extends State<AccountFormPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
 
@@ -17,10 +17,7 @@ class _PaymentFormPageState extends State<PaymentFormPage> {
 
   Future<void> _onSave() async {
     final name = _nameController.text;
-    final description = _descController.text;
-
-    await _databaseService
-        .insertPayment(Payment(name: name, description: description));
+    await _databaseService.insertAccount(Account(name: name));
 
     Navigator.pop(context);
   }
@@ -29,7 +26,7 @@ class _PaymentFormPageState extends State<PaymentFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add a new Payment'),
+        title: Text('Add a new Account'),
         centerTitle: true,
       ),
       body: Padding(
@@ -41,7 +38,7 @@ class _PaymentFormPageState extends State<PaymentFormPage> {
               controller: _nameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter name of the Payment here',
+                hintText: 'Enter name of the Account here',
               ),
             ),
             SizedBox(height: 16.0),
@@ -50,7 +47,7 @@ class _PaymentFormPageState extends State<PaymentFormPage> {
               maxLines: 7,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter description about the Payment here',
+                hintText: 'Enter description about the Account here',
               ),
             ),
             SizedBox(height: 16.0),
@@ -59,7 +56,7 @@ class _PaymentFormPageState extends State<PaymentFormPage> {
               child: ElevatedButton(
                 onPressed: _onSave,
                 child: Text(
-                  'Save the Payment',
+                  'Save the Account',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),
