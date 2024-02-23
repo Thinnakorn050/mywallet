@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mywallet/common_widgets/payment_selector.dart';
+import 'package:mywallet/common_widgets/account_selector.dart';
+import 'package:mywallet/common_widgets/category_selector.dart';
 import 'package:mywallet/models/account.dart';
+import 'package:mywallet/models/category.dart';
 import 'package:mywallet/models/transfer.dart';
 import 'package:mywallet/services/database_service.dart';
 
@@ -23,10 +25,13 @@ class _TranFormPageState extends State<TranFormPage> {
     Color(0xFF2F1B15),
   ];
   static final List<Account> _accounts = [];
+  static final List<Category> _categories =
+      []; // Assuming you have a Category class
 
   final DatabaseService _databaseService = DatabaseService();
 
   int _selectedAccount = 0;
+  int _selectedCategory = 0;
 
   @override
   void initState() {
@@ -46,12 +51,21 @@ class _TranFormPageState extends State<TranFormPage> {
     return _accounts;
   }
 
+  Future<List<Category>> _getCategories() async {
+    final categories = await _databaseService.categoryAll();
+    if (_categories.isEmpty) _categories.addAll(categories);
+    if (widget.tran != null) {
+      _selectedCategory =
+          _categories.indexWhere((e) => e.id == widget.tran!.categoryId);
+    }
+    return Future.value(_categories); // Wrap the list inside Future.value()
+  }
+
   Future<void> _onSave() async {
     final account = _accounts[_selectedAccount];
+    final category = _categories[_selectedCategory];
 
-    // Assuming money and category are of type int
     final money = 100; // Replace with your actual value
-    final category = 1; // Replace with your actual value
     final date = DateTime.now(); // Replace with your actual value
     final memo = "SomeMemo"; // Replace with your actual value
 
@@ -59,7 +73,7 @@ class _TranFormPageState extends State<TranFormPage> {
         ? await _databaseService.insertTranfer(
             Transfer(
               money: money,
-              categoryId: category,
+              categoryId: category.id!, // Use the selected category ID
               date: date,
               memo: memo,
               accountId: account.id!,
@@ -69,7 +83,7 @@ class _TranFormPageState extends State<TranFormPage> {
             Transfer(
               id: widget.tran!.id,
               money: money,
-              categoryId: category,
+              categoryId: category.id!, // Use the selected category ID
               date: date,
               memo: memo,
               accountId: account.id!,
@@ -103,17 +117,41 @@ class _TranFormPageState extends State<TranFormPage> {
             // Breed Selector
             FutureBuilder<List<Account>>(
               future: _getAccounts(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+              builder: (context, accountSnapshot) {
+                if (accountSnapshot.connectionState ==
+                    ConnectionState.waiting) {
                   return Text("Loading accounts...");
                 }
-                return PaymentSelector(
-                  breeds: _accounts.map((e) => e.name).toList(),
-                  selectedIndex: _selectedAccount,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedAccount = value;
-                    });
+                return FutureBuilder<List<Category>>(
+                  future: _getCategories(),
+                  builder: (context, categorySnapshot) {
+                    if (categorySnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Text("Loading categories...");
+                    }
+                    return Column(
+                      children: [
+                        AccountSelector(
+                          accounts: _accounts.map((e) => e.name).toList(),
+                          selectedIndex: _selectedAccount,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedAccount = value;
+                            });
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        CategorySelector(
+                          categories: _categories.map((e) => e.name).toList(),
+                          selectedIndex: _selectedCategory,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = value;
+                            });
+                          },
+                        ),
+                      ],
+                    );
                   },
                 );
               },

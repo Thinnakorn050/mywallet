@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mywallet/common_widgets/account_builder.dart';
+import 'package:mywallet/common_widgets/category_builder.dart';
 import 'package:mywallet/common_widgets/tran_builder.dart';
 import 'package:mywallet/models/account.dart';
+import 'package:mywallet/models/category.dart';
 import 'package:mywallet/models/transfer.dart';
 import 'package:mywallet/pages/account_form_page.dart';
+import 'package:mywallet/pages/category_form_page.dart';
 import 'package:mywallet/pages/tran_form_page.dart';
 import 'package:mywallet/services/database_service.dart';
 
@@ -18,15 +21,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final DatabaseService _databaseService = DatabaseService();
 
-  Future<List<Transfer>> _getIncomes() async {
+  Future<List<Transfer>> _getTransfers() async {
     return await _databaseService.tranferAll();
   }
 
-  Future<List<Account>> _getBreeds() async {
+  Future<List<Account>> _getAccounts() async {
     return await _databaseService.accountAll();
   }
 
-  Future<void> _onIncomeDelete(Transfer tran) async {
+  Future<List<Category>> _getCategories() async {
+    return await _databaseService.categoryAll();
+  }
+
+  Future<void> _onTransferDelete(Transfer tran) async {
     await _databaseService.deleteTran(tran.id!);
     setState(() {});
   }
@@ -34,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Tran Database'),
@@ -49,13 +56,17 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: Text('Account'),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Text('Category'),
+              ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
             TranBuilder(
-              future: _getIncomes(),
+              future: _getTransfers(),
               onEdit: (value) {
                 {
                   Navigator.of(context)
@@ -68,10 +79,13 @@ class _HomePageState extends State<HomePage> {
                       .then((_) => setState(() {}));
                 }
               },
-              onDelete: _onIncomeDelete,
+              onDelete: _onTransferDelete,
             ),
             AccountBuilder(
-              future: _getBreeds(),
+              future: _getAccounts(),
+            ),
+            CategoryBuilder(
+              future: _getCategories(),
             ),
           ],
         ),
@@ -89,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                     )
                     .then((_) => setState(() {}));
               },
-              heroTag: 'addPayment',
+              heroTag: 'addAccount',
               child: FaIcon(FontAwesomeIcons.plus),
             ),
             SizedBox(height: 12.0),
@@ -104,8 +118,23 @@ class _HomePageState extends State<HomePage> {
                     )
                     .then((_) => setState(() {}));
               },
-              heroTag: 'addIncome',
+              heroTag: 'addTrans',
               child: FaIcon(FontAwesomeIcons.paw),
+            ),
+            SizedBox(height: 12.0),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (_) => CategoryFormPage(),
+                        fullscreenDialog: true,
+                      ),
+                    )
+                    .then((_) => setState(() {}));
+              },
+              heroTag: 'addCategory',
+              child: FaIcon(FontAwesomeIcons.check),
             ),
           ],
         ),

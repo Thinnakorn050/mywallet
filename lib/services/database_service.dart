@@ -55,7 +55,16 @@ class DatabaseService {
 
     //no F key for now it's error
     await db.execute(
-      'CREATE TABLE transfer(id INTEGER PRIMARY KEY, money INTEGER, date TEXT, memo TEXT, accountId INTEGER, categoryId INTEGER)',
+      'CREATE TABLE transfer('
+      'id INTEGER PRIMARY KEY, '
+      'money INTEGER, '
+      'date TEXT, '
+      'memo TEXT, '
+      'accountId INTEGER, '
+      'categoryId INTEGER, '
+      'FOREIGN KEY(accountId) REFERENCES account(id), '
+      'FOREIGN KEY(categoryId) REFERENCES category(id)'
+      ')',
     );
   }
 
@@ -185,6 +194,20 @@ class DatabaseService {
     // Remove the Breed from the database.
     await db.delete(
       'account',
+      // Use a `where` clause to delete a specific breed.
+      where: 'id = ?',
+      // Pass the Breed's id as a whereArg to prevent SQL injection.
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> deleteCategory(int id) async {
+    // Get a reference to the database.
+    final db = await _databaseService.database;
+
+    // Remove the Breed from the database.
+    await db.delete(
+      'category',
       // Use a `where` clause to delete a specific breed.
       where: 'id = ?',
       // Pass the Breed's id as a whereArg to prevent SQL injection.

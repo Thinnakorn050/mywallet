@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class PaymentSelector extends StatelessWidget {
-  const PaymentSelector({
+class AccountSelector extends StatelessWidget {
+  const AccountSelector({
     Key? key,
-    required this.breeds,
+    required this.accounts,
     required this.selectedIndex,
     required this.onChanged,
   }) : super(key: key);
-  final List<String> breeds;
+  final List<String> accounts;
   final int selectedIndex;
   final Function(int) onChanged;
 
@@ -17,7 +17,7 @@ class PaymentSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Select Payment',
+          'Select Account',
           style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.w500,
@@ -28,7 +28,7 @@ class PaymentSelector extends StatelessWidget {
           height: 40.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: breeds.length,
+            itemCount: accounts.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () => onChanged(index),
@@ -45,7 +45,7 @@ class PaymentSelector extends StatelessWidget {
                           selectedIndex == index ? Colors.teal : Colors.black,
                     ),
                   ),
-                  child: Text(breeds[index]),
+                  child: Text(accounts[index]),
                 ),
               );
             },
