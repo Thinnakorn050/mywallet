@@ -48,7 +48,7 @@ class _TranFormPageState extends State<TranFormPage> {
       _selectedAccount =
           _accounts.indexWhere((e) => e.id == widget.tran!.accountId);
     }
-    return _accounts;
+    return Future.value(_accounts);
   }
 
   Future<List<Category>> _getCategories() async {
@@ -62,33 +62,36 @@ class _TranFormPageState extends State<TranFormPage> {
   }
 
   Future<void> _onSave() async {
+    final money = 100; // Replace with your actual value
+    final date = DateTime.now();
+    final memo = _nameController.text; // Use the value from the TextField
     final account = _accounts[_selectedAccount];
     final category = _categories[_selectedCategory];
 
-    final money = 100; // Replace with your actual value
-    final date = DateTime.now(); // Replace with your actual value
-    final memo = "SomeMemo"; // Replace with your actual value
-
-    widget.tran == null
-        ? await _databaseService.insertTranfer(
-            Transfer(
-              money: money,
-              categoryId: category.id!, // Use the selected category ID
-              date: date,
-              memo: memo,
-              accountId: account.id!,
-            ),
-          )
-        : await _databaseService.updateTran(
-            Transfer(
-              id: widget.tran!.id,
-              money: money,
-              categoryId: category.id!, // Use the selected category ID
-              date: date,
-              memo: memo,
-              accountId: account.id!,
-            ),
-          );
+    if (widget.tran == null) {
+      // Insert Operation (new Transfer)
+      await _databaseService.insertTranfer(
+        Transfer(
+          money: money,
+          date: date,
+          memo: memo,
+          accountId: account.id!,
+          categoryId: category.id!,
+        ),
+      );
+    } else {
+      // Update Operation (existing Transfer)
+      await _databaseService.updateTran(
+        Transfer(
+          id: widget.tran!.id,
+          money: money,
+          date: date,
+          memo: memo,
+          accountId: account.id!,
+          categoryId: category.id!,
+        ),
+      );
+    }
 
     Navigator.pop(context);
   }

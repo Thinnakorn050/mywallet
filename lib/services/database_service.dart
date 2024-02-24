@@ -186,6 +186,13 @@ class DatabaseService {
         where: 'id = ?', whereArgs: [tran.id]);
   }
 
+  Future<Transfer> transferOne(int id) async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('tranfer', where: 'id = ?', whereArgs: [id]);
+    return Transfer.fromMap(maps[0]);
+  }
+
   // A method that deletes a breed data from the breeds table.
   Future<void> deleteAccount(int id) async {
     // Get a reference to the database.

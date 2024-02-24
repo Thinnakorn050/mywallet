@@ -10,6 +10,7 @@ class TranBuilder extends StatelessWidget {
     required this.onEdit,
     required this.onDelete,
   }) : super(key: key);
+
   final Future<List<Transfer>> future;
   final Function(Transfer) onEdit;
   final Function(Transfer) onDelete;
@@ -18,6 +19,12 @@ class TranBuilder extends StatelessWidget {
     final DatabaseService _databaseService = DatabaseService();
     final account = await _databaseService.accountOne(id);
     return account.name;
+  }
+
+  Future<String> getCategorytName(int id) async {
+    final DatabaseService _databaseService = DatabaseService();
+    final category = await _databaseService.categoryOne(id);
+    return category.name;
   }
 
   @override
