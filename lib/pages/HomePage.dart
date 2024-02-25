@@ -6,8 +6,6 @@ import 'package:mywallet/common_widgets/tran_builder.dart';
 import 'package:mywallet/models/account.dart';
 import 'package:mywallet/models/category.dart';
 import 'package:mywallet/models/transfer.dart';
-import 'package:mywallet/pages/account_form_page.dart';
-import 'package:mywallet/pages/category_form_page.dart';
 import 'package:mywallet/pages/tran_form_page.dart';
 import 'package:mywallet/services/database_service.dart';
 
@@ -52,14 +50,6 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: Text('Trans'),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('Account'),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('Category'),
-              ),
             ],
           ),
         ),
@@ -97,21 +87,6 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context)
                     .push(
                       MaterialPageRoute(
-                        builder: (_) => AccountFormPage(),
-                        fullscreenDialog: true,
-                      ),
-                    )
-                    .then((_) => setState(() {}));
-              },
-              heroTag: 'addAccount',
-              child: FaIcon(FontAwesomeIcons.plus),
-            ),
-            SizedBox(height: 12.0),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(
-                      MaterialPageRoute(
                         builder: (_) => TranFormPage(),
                         fullscreenDialog: true,
                       ),
@@ -120,21 +95,6 @@ class _HomePageState extends State<HomePage> {
               },
               heroTag: 'addTrans',
               child: FaIcon(FontAwesomeIcons.paw),
-            ),
-            SizedBox(height: 12.0),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(
-                      MaterialPageRoute(
-                        builder: (_) => CategoryFormPage(),
-                        fullscreenDialog: true,
-                      ),
-                    )
-                    .then((_) => setState(() {}));
-              },
-              heroTag: 'addCategory',
-              child: FaIcon(FontAwesomeIcons.check),
             ),
           ],
         ),
