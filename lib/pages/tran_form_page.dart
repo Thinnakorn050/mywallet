@@ -23,8 +23,10 @@ class _TranFormPageState extends State<TranFormPage> {
 
   final DatabaseService _databaseService = DatabaseService();
 
+  String? _moneyErrorText; // Error text for money input field
   int _selectedAccount = 0;
   int _selectedCategory = 0;
+  DateTime _selectedDate = DateTime.now(); // Initialize with current date
 
   @override
   void initState() {
@@ -58,14 +60,36 @@ class _TranFormPageState extends State<TranFormPage> {
       _selectedCategory =
           _categories.indexWhere((e) => e.id == widget.tran!.categoryId);
     }
-    return Future.value(_categories); // Wrap the list inside Future.value()
+    return Future.value(_categories);
   }
 
   Future<void> _onSave() async {
-    final money =
-        int.parse(_moneyController.text); // Replace with your actual value
-    final date = DateTime.now();
-    final memo = _nameController.text; // Use the value from the TextField
+    //check for money input
+    if (_moneyController.text.isEmpty) {
+      setState(() {
+        _moneyErrorText = 'Cannot be empty';
+      });
+      return;
+    }
+
+    //check for number only money input
+    final RegExp numberRegex = RegExp(r'^-?[0-9]+$');
+    if (!numberRegex.hasMatch(_moneyController.text)) {
+      setState(() {
+        _moneyErrorText = 'Please enter a valid number';
+      });
+      return;
+    }
+
+    // Reset error text
+    setState(() {
+      _moneyErrorText = null;
+    });
+
+    final money = int.parse(_moneyController.text.trim());
+    final date = _selectedDate;
+    final memo =
+        _nameController.text.trim(); // Use the value from the TextField
     final account = _accounts[_selectedAccount];
     final category = _categories[_selectedCategory];
 
@@ -105,7 +129,7 @@ class _TranFormPageState extends State<TranFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Tran Record'),
+        title: const Text('New Transfer'),
         centerTitle: true,
       ),
       body: Padding(
@@ -117,23 +141,24 @@ class _TranFormPageState extends State<TranFormPage> {
               controller: _moneyController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter Money here',
+                hintText: 'Enter Money here ',
+                errorText: _moneyErrorText,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             FutureBuilder<List<Account>>(
               future: _getAccounts(),
               builder: (context, accountSnapshot) {
                 if (accountSnapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return Text("Loading accounts...");
+                  return const Text("Loading accounts...");
                 }
                 return FutureBuilder<List<Category>>(
                   future: _getCategories(),
                   builder: (context, categorySnapshot) {
                     if (categorySnapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return Text("Loading categories...");
+                      return const Text("Loading categories...");
                     }
                     return Column(
                       children: [
@@ -146,7 +171,7 @@ class _TranFormPageState extends State<TranFormPage> {
                             });
                           },
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
                         CategorySelector(
                           categories: _categories.map((e) => e.name).toList(),
                           selectedIndex: _selectedCategory,
@@ -162,12 +187,14 @@ class _TranFormPageState extends State<TranFormPage> {
                 );
               },
             ),
-            SizedBox(height: 24.0),
+            const SizedBox(height: 24.0),
+            _buildDatePicker(),
+            const SizedBox(height: 24.0),
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter Memo here',
+                hintText: 'Memo',
               ),
             ),
             SizedBox(height: 16.0),
@@ -175,20 +202,20 @@ class _TranFormPageState extends State<TranFormPage> {
               height: 45.0,
               child: ElevatedButton(
                 onPressed: _onSave,
-                child: Text(
-                  'Save the Tran data',
+                child: const Text(
+                  'Save',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             SizedBox(
               height: 45.0,
               child: ElevatedButton(
                 onPressed: _onCancel,
-                child: Text(
+                child: const Text(
                   'Cancel',
                   style: TextStyle(
                     fontSize: 16.0,
@@ -199,6 +226,32 @@ class _TranFormPageState extends State<TranFormPage> {
           ],
         ),
       ),
+    );
+  }
+
+  // Date Picker Widget
+  Widget _buildDatePicker() {
+    return ListTile(
+      title: Text(
+        "Select Date",
+        style: TextStyle(
+          fontSize: 16.0,
+        ),
+      ),
+      subtitle: Text(
+          "${_selectedDate.toLocal()}".split(' ')[0]), // Display selected date
+      onTap: () async {
+        final DateTime? pickedDate = await showDatePicker(
+          context: context,
+          initialDate: _selectedDate,
+          firstDate: DateTime(2000),
+          lastDate: DateTime(2100),
+        );
+        if (pickedDate != null && pickedDate != _selectedDate)
+          setState(() {
+            _selectedDate = pickedDate;
+          });
+      },
     );
   }
 }
