@@ -83,15 +83,15 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(
-                      MaterialPageRoute(
-                        builder: (_) => TranFormPage(),
-                        fullscreenDialog: true,
-                      ),
-                    )
-                    .then((_) => setState(() {}));
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => TranFormPage(),
+                    fullscreenDialog: true,
+                  ),
+                );
+                setState(() {});
               },
               heroTag: 'addTrans',
               child: FaIcon(FontAwesomeIcons.paw),

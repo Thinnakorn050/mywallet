@@ -107,7 +107,7 @@ class TranBuilder extends StatelessWidget {
                   ),
                   SizedBox(height: 4.0),
                   Text(
-                    'Date: ${tran.date.toString()} ',
+                    'Date: ${tran.date.year.toString() + "-" + tran.date.month.toString() + "-" + tran.date.day.toString()} ',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,

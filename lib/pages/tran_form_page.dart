@@ -18,8 +18,8 @@ class _TranFormPageState extends State<TranFormPage> {
   final TextEditingController _moneyController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
 
-  static final List<Account> _accounts = [];
-  static final List<Category> _categories = [];
+  List<Account> _accounts = [];
+  List<Category> _categories = [];
 
   final DatabaseService _databaseService = DatabaseService();
 
@@ -37,7 +37,10 @@ class _TranFormPageState extends State<TranFormPage> {
 
   Future<List<Account>> _getAccounts() async {
     final accounts = await _databaseService.accountAll();
-    if (_accounts.isEmpty) _accounts.addAll(accounts);
+
+    _accounts = [];
+    _accounts.addAll(accounts);
+
     if (widget.tran != null) {
       _selectedAccount =
           _accounts.indexWhere((e) => e.id == widget.tran!.accountId);
@@ -47,7 +50,10 @@ class _TranFormPageState extends State<TranFormPage> {
 
   Future<List<Category>> _getCategories() async {
     final categories = await _databaseService.categoryAll();
-    if (_categories.isEmpty) _categories.addAll(categories);
+
+    _categories = [];
+    _categories.addAll(categories);
+
     if (widget.tran != null) {
       _selectedCategory =
           _categories.indexWhere((e) => e.id == widget.tran!.categoryId);
