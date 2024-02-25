@@ -27,13 +27,18 @@ class _TranFormPageState extends State<TranFormPage> {
   int _selectedAccount = 0;
   int _selectedCategory = 0;
   DateTime _selectedDate = DateTime.now(); // Initialize with current date
+  bool initAcc = false;
+  bool initCat = false;
 
   @override
   void initState() {
     super.initState();
+
+    //update
     if (widget.tran != null) {
       _nameController.text = widget.tran!.memo;
       _moneyController.text = widget.tran!.money.toString();
+      _selectedDate = widget.tran!.date;
     }
   }
 
@@ -43,9 +48,10 @@ class _TranFormPageState extends State<TranFormPage> {
     _accounts = [];
     _accounts.addAll(accounts);
 
-    if (widget.tran != null) {
+    if (widget.tran != null && !initAcc) {
       _selectedAccount =
           _accounts.indexWhere((e) => e.id == widget.tran!.accountId);
+      initAcc = true;
     }
     return Future.value(_accounts);
   }
@@ -56,9 +62,10 @@ class _TranFormPageState extends State<TranFormPage> {
     _categories = [];
     _categories.addAll(categories);
 
-    if (widget.tran != null) {
+    if (widget.tran != null && !initCat) {
       _selectedCategory =
           _categories.indexWhere((e) => e.id == widget.tran!.categoryId);
+      initCat = true;
     }
     return Future.value(_categories);
   }
@@ -82,9 +89,7 @@ class _TranFormPageState extends State<TranFormPage> {
     }
 
     // Reset error text
-    setState(() {
-      _moneyErrorText = null;
-    });
+    //setState(() {_moneyErrorText = null; });
 
     final money = int.parse(_moneyController.text.trim());
     final date = _selectedDate;
@@ -132,98 +137,102 @@ class _TranFormPageState extends State<TranFormPage> {
         title: const Text('New Transfer'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _moneyController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter Money here ',
-                errorText: _moneyErrorText,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: 30.0),
+              TextField(
+                controller: _moneyController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter Money here ',
+                  errorText: _moneyErrorText,
+                ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            FutureBuilder<List<Account>>(
-              future: _getAccounts(),
-              builder: (context, accountSnapshot) {
-                if (accountSnapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return const Text("Loading accounts...");
-                }
-                return FutureBuilder<List<Category>>(
-                  future: _getCategories(),
-                  builder: (context, categorySnapshot) {
-                    if (categorySnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return const Text("Loading categories...");
-                    }
-                    return Column(
-                      children: [
-                        AccountSelector(
-                          accounts: _accounts.map((e) => e.name).toList(),
-                          selectedIndex: _selectedAccount,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedAccount = value;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 16.0),
-                        CategorySelector(
-                          categories: _categories.map((e) => e.name).toList(),
-                          selectedIndex: _selectedCategory,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedCategory = value;
-                            });
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-            const SizedBox(height: 24.0),
-            _buildDatePicker(),
-            const SizedBox(height: 24.0),
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Memo',
+              const SizedBox(height: 16.0),
+              FutureBuilder<List<Account>>(
+                future: _getAccounts(),
+                builder: (context, accountSnapshot) {
+                  if (accountSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Text("Loading accounts...");
+                  }
+                  return FutureBuilder<List<Category>>(
+                    future: _getCategories(),
+                    builder: (context, categorySnapshot) {
+                      if (categorySnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Text("Loading categories...");
+                      }
+                      return Column(
+                        children: [
+                          AccountSelector(
+                            accounts: _accounts.map((e) => e.name).toList(),
+                            selectedIndex: _selectedAccount,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedAccount = value;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          CategorySelector(
+                            categories: _categories.map((e) => e.name).toList(),
+                            selectedIndex: _selectedCategory,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedCategory = value;
+                              });
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
-            ),
-            SizedBox(height: 16.0),
-            SizedBox(
-              height: 45.0,
-              child: ElevatedButton(
-                onPressed: _onSave,
-                child: const Text(
-                  'Save',
-                  style: TextStyle(
-                    fontSize: 16.0,
+              const SizedBox(height: 24.0),
+              _buildDatePicker(),
+              const SizedBox(height: 24.0),
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Memo',
+                ),
+              ),
+              SizedBox(height: 16.0),
+              SizedBox(
+                height: 45.0,
+                child: ElevatedButton(
+                  onPressed: _onSave,
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            SizedBox(
-              height: 45.0,
-              child: ElevatedButton(
-                onPressed: _onCancel,
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
-                    fontSize: 16.0,
+              const SizedBox(height: 16.0),
+              SizedBox(
+                height: 45.0,
+                child: ElevatedButton(
+                  onPressed: _onCancel,
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 300),
+            ],
+          ),
         ),
       ),
     );

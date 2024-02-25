@@ -65,7 +65,7 @@ class TranBuilder extends StatelessWidget {
                 color: Colors.grey[200],
               ),
               alignment: Alignment.center,
-              child: FaIcon(FontAwesomeIcons.dog, size: 18.0),
+              child: Icon(Icons.bookmark_border_outlined),
             ),
             SizedBox(width: 20.0),
             Expanded(

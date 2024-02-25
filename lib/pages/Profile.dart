@@ -42,13 +42,13 @@ class _ProfileState extends State<Profile> {
           centerTitle: true,
           bottom: TabBar(
             tabs: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('Account'),
+              Tab(
+                icon: Icon(Icons.account_balance_wallet_outlined),
+                text: 'Account',
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('Category'),
+              Tab(
+                icon: Icon(Icons.category),
+                text: 'Category',
               ),
             ],
           ),
@@ -78,7 +78,7 @@ class _ProfileState extends State<Profile> {
                     .then((_) => setState(() {}));
               },
               heroTag: 'addAccount',
-              child: FaIcon(FontAwesomeIcons.plus),
+              child: Icon(Icons.account_balance_wallet_outlined),
             ),
             SizedBox(height: 12.0),
             FloatingActionButton(
@@ -93,7 +93,7 @@ class _ProfileState extends State<Profile> {
                     .then((_) => setState(() {}));
               },
               heroTag: 'addCategory',
-              child: FaIcon(FontAwesomeIcons.check),
+              child: Icon(Icons.category),
             ),
           ],
         ),

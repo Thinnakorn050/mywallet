@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tran Database'),
+          title: Text('Home Page'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {});
               },
               heroTag: 'addTrans',
-              child: FaIcon(FontAwesomeIcons.paw),
+              child: Icon(Icons.currency_exchange),
             ),
           ],
         ),
