@@ -15,18 +15,11 @@ class TranFormPage extends StatefulWidget {
 }
 
 class _TranFormPageState extends State<TranFormPage> {
+  final TextEditingController _moneyController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  static final List<Color> _colors = [
-    Color(0xFF000000),
-    Color(0xFFFFFFFF),
-    Color(0xFF947867),
-    Color(0xFFC89234),
-    Color(0xFF862F07),
-    Color(0xFF2F1B15),
-  ];
+
   static final List<Account> _accounts = [];
-  static final List<Category> _categories =
-      []; // Assuming you have a Category class
+  static final List<Category> _categories = [];
 
   final DatabaseService _databaseService = DatabaseService();
 
@@ -38,6 +31,7 @@ class _TranFormPageState extends State<TranFormPage> {
     super.initState();
     if (widget.tran != null) {
       _nameController.text = widget.tran!.memo;
+      _moneyController.text = widget.tran!.money.toString();
     }
   }
 
@@ -62,7 +56,8 @@ class _TranFormPageState extends State<TranFormPage> {
   }
 
   Future<void> _onSave() async {
-    final money = 100; // Replace with your actual value
+    final money =
+        int.parse(_moneyController.text); // Replace with your actual value
     final date = DateTime.now();
     final memo = _nameController.text; // Use the value from the TextField
     final account = _accounts[_selectedAccount];
@@ -96,6 +91,10 @@ class _TranFormPageState extends State<TranFormPage> {
     Navigator.pop(context);
   }
 
+  Future<void> _onCancel() async {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,15 +108,13 @@ class _TranFormPageState extends State<TranFormPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
-              controller: _nameController,
+              controller: _moneyController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter name of the Tran here',
+                hintText: 'Enter Money here',
               ),
             ),
             SizedBox(height: 16.0),
-
-            // Breed Selector
             FutureBuilder<List<Account>>(
               future: _getAccounts(),
               builder: (context, accountSnapshot) {
@@ -160,12 +157,33 @@ class _TranFormPageState extends State<TranFormPage> {
               },
             ),
             SizedBox(height: 24.0),
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter Memo here',
+              ),
+            ),
+            SizedBox(height: 16.0),
             SizedBox(
               height: 45.0,
               child: ElevatedButton(
                 onPressed: _onSave,
                 child: Text(
                   'Save the Tran data',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            SizedBox(
+              height: 45.0,
+              child: ElevatedButton(
+                onPressed: _onCancel,
+                child: Text(
+                  'Cancel',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),

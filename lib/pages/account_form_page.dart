@@ -20,6 +20,10 @@ class _AccountFormPageState extends State<AccountFormPage> {
     Navigator.pop(context);
   }
 
+  Future<void> _onCancel() async {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +50,19 @@ class _AccountFormPageState extends State<AccountFormPage> {
                 onPressed: _onSave,
                 child: Text(
                   'Save the Account',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            SizedBox(
+              height: 45.0,
+              child: ElevatedButton(
+                onPressed: _onCancel,
+                child: Text(
+                  'Cancel',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),

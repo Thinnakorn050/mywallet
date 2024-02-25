@@ -73,7 +73,7 @@ class TranBuilder extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'money: ${tran.money.toString()} ',
+                    'Money: ${tran.money.toString()} ',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
@@ -83,25 +83,43 @@ class TranBuilder extends StatelessWidget {
                   FutureBuilder<String>(
                     future: getAccountName(tran.accountId),
                     builder: (context, snapshot) {
-                      return Text('Account: ${snapshot.data}');
+                      return Text(
+                        'Account: ${snapshot.data}',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
                     },
                   ),
                   SizedBox(height: 4.0),
-                  Row(
-                    children: [
-                      Text('category: ${tran.categoryId.toString()} '),
-                      Container(
-                        height: 15.0,
-                        width: 15.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.0),
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 1.5,
-                          ),
+                  FutureBuilder<String>(
+                    future: getCategorytName(tran.categoryId),
+                    builder: (context, snapshot) {
+                      return Text(
+                        'Category: ${snapshot.data}',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ),
-                    ],
+                      );
+                    },
+                  ),
+                  SizedBox(height: 4.0),
+                  Text(
+                    'Date: ${tran.date.toString()} ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 4.0),
+                  Text(
+                    'Memo: ${tran.memo} ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
