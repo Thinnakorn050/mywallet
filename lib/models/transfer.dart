@@ -27,8 +27,8 @@ class Transfer {
       'money': money,
       'date': date.toString(),
       'memo': memo,
-      'account': accountId,
-      'category': categoryId,
+      'accountId': accountId,
+      'categoryId': categoryId,
     };
   }
 

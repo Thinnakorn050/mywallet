@@ -144,7 +144,7 @@ class DatabaseService {
 
   Future<List<Transfer>> tranferAll() async {
     final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps = await db.query('tranfer');
+    final List<Map<String, dynamic>> maps = await db.query('transfer');
     return List.generate(maps.length, (index) => Transfer.fromMap(maps[index]));
   }
 
@@ -189,7 +189,7 @@ class DatabaseService {
   Future<Transfer> transferOne(int id) async {
     final db = await _databaseService.database;
     final List<Map<String, dynamic>> maps =
-        await db.query('tranfer', where: 'id = ?', whereArgs: [id]);
+        await db.query('transfer', where: 'id = ?', whereArgs: [id]);
     return Transfer.fromMap(maps[0]);
   }
 
