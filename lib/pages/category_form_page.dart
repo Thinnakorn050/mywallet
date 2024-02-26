@@ -3,7 +3,8 @@ import 'package:mywallet/models/category.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class CategoryFormPage extends StatefulWidget {
-  const CategoryFormPage({Key? key}) : super(key: key);
+  const CategoryFormPage({Key? key, this.category}) : super(key: key);
+  final Category? category;
 
   @override
   _CategoryFormPageState createState() => _CategoryFormPageState();
