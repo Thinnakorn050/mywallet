@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mywallet/common_widgets/account_builder.dart';
 import 'package:mywallet/common_widgets/category_builder.dart';
 import 'package:mywallet/common_widgets/tran_builder.dart';
@@ -73,6 +72,7 @@ class _HomePageState extends State<HomePage> {
             ),
             AccountBuilder(
               future: _getAccounts(),
+              onEdit: (account) {},
             ),
             CategoryBuilder(
               future: _getCategories(),

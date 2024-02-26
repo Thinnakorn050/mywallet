@@ -5,8 +5,10 @@ class AccountBuilder extends StatelessWidget {
   const AccountBuilder({
     Key? key,
     required this.future,
+    required this.onEdit,
   }) : super(key: key);
   final Future<List<Account>> future;
+  final Function(Account) onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,20 @@ class AccountBuilder extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+            SizedBox(width: 20.0),
+            GestureDetector(
+              onTap: () => onEdit(account),
+              child: Container(
+                height: 40.0,
+                width: 40.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[200],
+                ),
+                alignment: Alignment.center,
+                child: Icon(Icons.edit, color: Colors.orange[800]),
               ),
             ),
           ],

@@ -3,7 +3,8 @@ import 'package:mywallet/models/account.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class AccountFormPage extends StatefulWidget {
-  const AccountFormPage({Key? key}) : super(key: key);
+  const AccountFormPage({Key? key, this.account}) : super(key: key);
+  final Account? account;
 
   @override
   _AccountFormPageState createState() => _AccountFormPageState();

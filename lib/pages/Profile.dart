@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mywallet/common_widgets/account_builder.dart';
 import 'package:mywallet/common_widgets/category_builder.dart';
 import 'package:mywallet/models/account.dart';
@@ -35,7 +34,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Profile_page'),
@@ -57,6 +56,18 @@ class _ProfileState extends State<Profile> {
           children: [
             AccountBuilder(
               future: _getAccounts(),
+              onEdit: (value) {
+                {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                          builder: (_) => AccountFormPage(account: value),
+                          fullscreenDialog: true,
+                        ),
+                      )
+                      .then((_) => setState(() {}));
+                }
+              },
             ),
             CategoryBuilder(
               future: _getCategories(),
