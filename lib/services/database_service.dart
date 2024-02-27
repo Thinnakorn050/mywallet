@@ -66,6 +66,41 @@ class DatabaseService {
       'FOREIGN KEY(categoryId) REFERENCES category(id)'
       ')',
     );
+
+    //insert base data
+    await db.execute(
+      'INSERT INTO account (name) VALUES ("💵Cash"), ("🟪SCB-Bank"), ("🟨KrungSri-Bank")',
+    );
+    await db.execute(
+      'INSERT INTO category (name) VALUES ("💼Work"), ("🍛Food"), ("🛒Shopping")',
+    );
+
+    //base balance from work
+    await db.execute(
+      'INSERT INTO transfer (money, date, memo, accountId, categoryId) VALUES ("3000", "2024-01-01 11:11:11", "default", "1", "1")',
+    );
+    await db.execute(
+      'INSERT INTO transfer (money, date, memo, accountId, categoryId) VALUES ("4000", "2024-01-01 11:11:11", "default", "2", "1")',
+    );
+    await db.execute(
+      'INSERT INTO transfer (money, date, memo, accountId, categoryId) VALUES ("5000", "2024-01-01 11:11:11", "default", "3", "1")',
+    );
+
+    //base balance from food
+    await db.execute(
+      'INSERT INTO transfer (money, date, memo, accountId, categoryId) VALUES ("-120", "2024-01-01 11:11:11", "default", "1", "2")',
+    );
+    await db.execute(
+      'INSERT INTO transfer (money, date, memo, accountId, categoryId) VALUES ("-60", "2024-01-02 11:11:11", "default", "1", "2")',
+    );
+
+    //base balance from shopping
+    await db.execute(
+      'INSERT INTO transfer (money, date, memo, accountId, categoryId) VALUES ("-3000", "2024-02-02 11:11:11", "default", "1", "3")',
+    );
+    await db.execute(
+      'INSERT INTO transfer (money, date, memo, accountId, categoryId) VALUES ("-1000", "2024-02-03 11:11:11", "default", "1", "3")',
+    );
   }
 
   // Define a function that inserts breeds into the database
