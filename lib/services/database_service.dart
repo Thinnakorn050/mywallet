@@ -28,9 +28,6 @@ class DatabaseService {
     // constructed for each platform.
     final path = join(databasePath, 'flutter_sqflite_database.db');
 
-    // Set the version. This executes the onCreate function and provides a
-    // path to perform database upgrades and downgrades.
-
     //delete everytime program run
     deleteDatabase(path);
 
@@ -43,8 +40,6 @@ class DatabaseService {
     );
   }
 
-  // When the database is first created, create a table to store breeds
-  // and a table to store dogs.
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(
       'CREATE TABLE account(id INTEGER PRIMARY KEY, name TEXT)',
@@ -134,15 +129,14 @@ class DatabaseService {
     );
   }
 
-  // A method that retrieves all the breeds from the breeds table.
   Future<List<Account>> accountAll() async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
-    // Query the table for all the Breeds.
+    // Query the table for all
     final List<Map<String, dynamic>> maps = await db.query('account');
 
-    // Convert the List<Map<String, dynamic> into a List<Breed>.
+    // Convert the List<Map<String, dynamic> into a List<Account>.
     return List.generate(maps.length, (index) => Account.fromMap(maps[index]));
   }
 
@@ -157,10 +151,8 @@ class DatabaseService {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
-    // Query the table for all the Breeds.
     final List<Map<String, dynamic>> maps = await db.query('category');
 
-    // Convert the List<Map<String, dynamic> into a List<Breed>.
     return List.generate(maps.length, (index) => Category.fromMap(maps[index]));
   }
 
@@ -177,34 +169,38 @@ class DatabaseService {
     return List.generate(maps.length, (index) => Transfer.fromMap(maps[index]));
   }
 
-  // A method that updates a breed data from the breeds table.
+  Future<List<Transfer>> tranfer10Newest() async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'transfer',
+      orderBy: 'date DESC',
+      limit: 10,
+    );
+    return List.generate(maps.length, (index) => Transfer.fromMap(maps[index]));
+  }
+
   Future<void> updateAccount(Account account) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
-    // Update the given breed
     await db.update(
       'account',
       account.toMap(),
-      // Ensure that the Breed has a matching id.
+      // Ensure that the account has a matching id.
       where: 'id = ?',
-      // Pass the Breed's id as a whereArg to prevent SQL injection.
+      // Pass the account's id as a whereArg to prevent SQL injection.
       whereArgs: [account.id],
     );
   }
 
-  // A method that updates a breed data from the breeds table.
   Future<void> updateCategory(Category category) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
-    // Update the given breed
     await db.update(
       'category',
       category.toMap(),
-      // Ensure that the Breed has a matching id.
       where: 'id = ?',
-      // Pass the Breed's id as a whereArg to prevent SQL injection.
       whereArgs: [category.id],
     );
   }
@@ -222,17 +218,13 @@ class DatabaseService {
     return Transfer.fromMap(maps[0]);
   }
 
-  // A method that deletes a breed data from the breeds table.
   Future<void> deleteAccount(int id) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
-    // Remove the Breed from the database.
     await db.delete(
       'account',
-      // Use a `where` clause to delete a specific breed.
       where: 'id = ?',
-      // Pass the Breed's id as a whereArg to prevent SQL injection.
       whereArgs: [id],
     );
   }
@@ -241,12 +233,9 @@ class DatabaseService {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
-    // Remove the Breed from the database.
     await db.delete(
       'category',
-      // Use a `where` clause to delete a specific breed.
       where: 'id = ?',
-      // Pass the Breed's id as a whereArg to prevent SQL injection.
       whereArgs: [id],
     );
   }

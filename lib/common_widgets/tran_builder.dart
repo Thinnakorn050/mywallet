@@ -52,6 +52,7 @@ class TranBuilder extends StatelessWidget {
   }
 
   Widget _buildTranCard(Transfer tran, BuildContext context) {
+    final color = tran.money >= 0 ? Colors.green : Colors.red;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -77,6 +78,7 @@ class TranBuilder extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
+                      color: color,
                     ),
                   ),
                   SizedBox(height: 4.0),
