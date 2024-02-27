@@ -103,22 +103,16 @@ class DatabaseService {
     );
   }
 
-  // Define a function that inserts breeds into the database
   Future<void> insertAccount(Account account) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
 
-    // Insert the Breed into the correct table. You might also specify the
-    // `conflictAlgorithm` to use in case the same breed is inserted twice.
-    //
     // In this case, replace any previous data.
-    int result = 99;
-    result = await db.insert(
+    await db.insert(
       'account',
       account.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print("InsertAccount return : " + result.toString());
   }
 
   Future<void> insertCategory(Category category) async {
@@ -260,5 +254,16 @@ class DatabaseService {
   Future<void> deleteTran(int id) async {
     final db = await _databaseService.database;
     await db.delete('transfer', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<Map<int, int>> sumMoneyGroupedByAccountId() async {
+    final db = await database;
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT accountId, SUM(money) AS totalMoney FROM transfer GROUP BY accountId');
+    final Map<int, int> sums = {};
+    for (final row in result) {
+      sums[row['accountId'] as int] = row['totalMoney'] as int;
+    }
+    return sums;
   }
 }
