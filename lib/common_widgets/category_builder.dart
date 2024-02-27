@@ -5,8 +5,10 @@ class CategoryBuilder extends StatelessWidget {
   const CategoryBuilder({
     Key? key,
     required this.future,
+    required this.onEdit,
   }) : super(key: key);
   final Future<List<Category>> future;
+  final Function(Category) onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,20 @@ class CategoryBuilder extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+            SizedBox(width: 20.0),
+            GestureDetector(
+              onTap: () => onEdit(category),
+              child: Container(
+                height: 40.0,
+                width: 40.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[200],
+                ),
+                alignment: Alignment.center,
+                child: Icon(Icons.edit, color: Colors.orange[800]),
               ),
             ),
           ],

@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage> {
             ),
             CategoryBuilder(
               future: _getCategories(),
+              onEdit: (category) {},
             ),
           ],
         ),

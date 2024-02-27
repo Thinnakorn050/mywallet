@@ -71,6 +71,18 @@ class _ProfileState extends State<Profile> {
             ),
             CategoryBuilder(
               future: _getCategories(),
+              onEdit: (value) {
+                {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                          builder: (_) => CategoryFormPage(category: value),
+                          fullscreenDialog: true,
+                        ),
+                      )
+                      .then((_) => setState(() {}));
+                }
+              },
             ),
           ],
         ),
