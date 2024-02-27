@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   final DatabaseService _databaseService = DatabaseService();
 
   Future<List<Transfer>> _getTransfers() async {
-    return await _databaseService.tranferAll();
+    return await _databaseService.tranfer10Newest();
   }
 
   Future<List<Account>> _getAccounts() async {

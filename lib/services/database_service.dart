@@ -177,7 +177,16 @@ class DatabaseService {
     return List.generate(maps.length, (index) => Transfer.fromMap(maps[index]));
   }
 
-  // A method that updates a breed data from the breeds table.
+  Future<List<Transfer>> tranfer10Newest() async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'transfer',
+      orderBy: 'date DESC',
+      limit: 10,
+    );
+    return List.generate(maps.length, (index) => Transfer.fromMap(maps[index]));
+  }
+
   Future<void> updateAccount(Account account) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
