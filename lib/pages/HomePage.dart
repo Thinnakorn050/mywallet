@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mywallet/common_widgets/account_builder.dart';
-import 'package:mywallet/common_widgets/category_builder.dart';
 import 'package:mywallet/common_widgets/tran_builder.dart';
 import 'package:mywallet/models/account.dart';
 import 'package:mywallet/models/category.dart';
@@ -69,14 +67,6 @@ class _HomePageState extends State<HomePage> {
                 }
               },
               onDelete: _onTransferDelete,
-            ),
-            AccountBuilder(
-              future: _getAccounts(),
-              onEdit: (account) {},
-            ),
-            CategoryBuilder(
-              future: _getCategories(),
-              onEdit: (category) {},
             ),
           ],
         ),
