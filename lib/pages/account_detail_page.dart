@@ -14,8 +14,7 @@ class AccountDetailPage extends StatefulWidget {
 class _AccountDetailPageState extends State<AccountDetailPage> {
   final DatabaseService _databaseService = DatabaseService();
 
-  late Future<List<Transfer>> _incomeTransfers;
-  late Future<List<Transfer>> _expenseTransfers;
+  late Future<List<Transfer>> _transfers;
 
   @override
   void initState() {
@@ -24,14 +23,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
   }
 
   Future<void> _loadData() async {
-    _incomeTransfers = _databaseService.transfersByAccountId(
-      widget.account!.id!,
-      isIncome: true,
-    );
-    _expenseTransfers = _databaseService.transfersByAccountId(
-      widget.account!.id!,
-      isIncome: false,
-    );
+    _transfers = _databaseService.transfersByAccountId(widget.account!.id!);
   }
 
   @override
@@ -41,15 +33,27 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
         title: Text('${widget.account!.name} Detail'),
       ),
       body: FutureBuilder(
-        future: Future.wait([_incomeTransfers, _expenseTransfers]),
-        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+        future: _transfers,
+        builder: (context, AsyncSnapshot<List<Transfer>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content:
+                          Text('Error loading transfers. Please try again.'),
+                    ),
+                  );
+                  _loadData(); // Retry on button press
+                },
+                child: Text('Retry'),
+              ),
+            );
           } else {
-            final List<Transfer> incomeTransfers = snapshot.data![0];
-            final List<Transfer> expenseTransfers = snapshot.data![1];
+            final List<Transfer> transfers = snapshot.data!;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,8 +65,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
-                _buildTransactionSection('Income', incomeTransfers),
-                _buildTransactionSection('Expense', expenseTransfers),
+                _buildTransactionSection('Transfers', transfers),
               ],
             );
           }
@@ -79,24 +82,32 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
           padding: const EdgeInsets.all(16.0),
           child: Text(
             title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
-        Expanded(
-          child: ListView.builder(
+        if (transfers.isEmpty)
+          Center(
+            child: Text('No transfers available.'),
+          )
+        else
+          ListView.builder(
+            shrinkWrap: true,
             itemCount: transfers.length,
             itemBuilder: (context, index) {
               final transfer = transfers[index];
 
-              return ListTile(
-                title: Text('Money: ${transfer.money}'),
-                subtitle: Text('Date: ${transfer.date}'),
-                // Add more details based on your Transfer model
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text('Money: ${transfer.money}'),
+                    subtitle: Text('Date: ${transfer.date}'),
+                    // Add more details based on your Transfer model
+                  ),
+                  if (index < transfers.length - 1) Divider(),
+                ],
               );
             },
           ),
-        ),
-        Divider(),
       ],
     );
   }

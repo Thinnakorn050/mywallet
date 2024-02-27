@@ -256,22 +256,13 @@ class DatabaseService {
     return sums;
   }
 
-  Future<List<Transfer>> transfersByAccountId(int accountId,
-      {bool? isIncome}) async {
+  Future<List<Transfer>> transfersByAccountId(int accountId) async {
     final Database db = await database;
 
-    String whereClause = 'accountId = ?';
-    List<dynamic> whereArgs = [accountId];
-
-    if (isIncome != null) {
-      whereClause += ' AND isIncome = ?';
-      whereArgs.add(isIncome ? 1 : 0);
-    }
-
     final List<Map<String, dynamic>> maps = await db.query(
-      'transfers',
-      where: whereClause,
-      whereArgs: whereArgs,
+      'transfer', // Correct table name
+      where: 'accountId = ?',
+      whereArgs: [accountId],
     );
 
     return List.generate(maps.length, (i) {
