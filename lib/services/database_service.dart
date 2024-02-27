@@ -266,4 +266,35 @@ class DatabaseService {
     }
     return sums;
   }
+
+  Future<List<Transfer>> transfersByAccountId(int accountId,
+      {bool? isIncome}) async {
+    final Database db = await database;
+
+    String whereClause = 'accountId = ?';
+    List<dynamic> whereArgs = [accountId];
+
+    if (isIncome != null) {
+      whereClause += ' AND isIncome = ?';
+      whereArgs.add(isIncome ? 1 : 0);
+    }
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'transfers',
+      where: whereClause,
+      whereArgs: whereArgs,
+    );
+
+    return List.generate(maps.length, (i) {
+      return Transfer(
+        id: maps[i]['id'],
+        money: maps[i]['money'],
+        date: DateTime.parse(maps[i]['date']),
+        memo: maps[i]['memo'],
+        accountId: maps[i]['accountId'],
+        categoryId: maps[i]['categoryId'],
+        // Add other fields based on your Transfer model
+      );
+    });
+  }
 }
