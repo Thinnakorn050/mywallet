@@ -14,9 +14,26 @@ class _AccountFormPageState extends State<AccountFormPage> {
   final TextEditingController _nameController = TextEditingController();
   final DatabaseService _databaseService = DatabaseService();
 
+  @override
+  void initState() {
+    super.initState();
+    // If account is provided, populate the text controller with existing data
+    if (widget.account != null) {
+      _nameController.text = widget.account!.name;
+    }
+  }
+
   Future<void> _onSave() async {
     final name = _nameController.text;
-    await _databaseService.insertAccount(Account(name: name));
+
+    if (widget.account != null) {
+      // If account is provided, it's an edit operation
+      await _databaseService
+          .updateAccount(Account(id: widget.account!.id, name: name));
+    } else {
+      // If account is not provided, it's an add operation
+      await _databaseService.insertAccount(Account(name: name));
+    }
 
     Navigator.pop(context);
   }
@@ -29,7 +46,8 @@ class _AccountFormPageState extends State<AccountFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add a new Account'),
+        title:
+            Text(widget.account != null ? 'Edit Account' : 'Add a new Account'),
         centerTitle: true,
       ),
       body: Padding(
@@ -50,7 +68,9 @@ class _AccountFormPageState extends State<AccountFormPage> {
               child: ElevatedButton(
                 onPressed: _onSave,
                 child: Text(
-                  'Save the Account',
+                  widget.account != null
+                      ? 'Update Account'
+                      : 'Save the Account',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),

@@ -14,9 +14,26 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
   final TextEditingController _nameController = TextEditingController();
   final DatabaseService _databaseService = DatabaseService();
 
+  @override
+  void initState() {
+    super.initState();
+    // If category is provided, populate the text controller with existing data
+    if (widget.category != null) {
+      _nameController.text = widget.category!.name;
+    }
+  }
+
   Future<void> _onSave() async {
     final name = _nameController.text;
-    await _databaseService.insertCategory(Category(name: name));
+
+    if (widget.category != null) {
+      // If category is provided, it's an edit operation
+      await _databaseService
+          .updateCategory(Category(id: widget.category!.id, name: name));
+    } else {
+      // If category is not provided, it's an add operation
+      await _databaseService.insertCategory(Category(name: name));
+    }
 
     Navigator.pop(context);
   }
@@ -29,7 +46,8 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add a new Category'),
+        title: Text(
+            widget.category != null ? 'Edit Category' : 'Add a new Category'),
         centerTitle: true,
       ),
       body: Padding(
@@ -50,7 +68,9 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
               child: ElevatedButton(
                 onPressed: _onSave,
                 child: Text(
-                  'Save the Category',
+                  widget.category != null
+                      ? 'Update Category'
+                      : 'Save the Category',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),
