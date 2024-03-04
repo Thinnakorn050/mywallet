@@ -3,7 +3,7 @@ import 'package:mywallet/common_widgets/tran_builder.dart';
 import 'package:mywallet/models/account.dart';
 import 'package:mywallet/models/category.dart';
 import 'package:mywallet/models/transfer.dart';
-import 'package:mywallet/pages/tran_form_page.dart';
+import 'package:mywallet/form_page/tran_form_page.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class HomePage extends StatefulWidget {
