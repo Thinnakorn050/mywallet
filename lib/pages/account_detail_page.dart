@@ -54,6 +54,9 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
             );
           } else {
             final List<Transfer> transfers = snapshot.data!;
+            double actualBalance = calculateActualBalance(transfers);
+            double pendingBalance = calculatePendingBalance(transfers);
+            double settledBalance = calculateSettledBalance(transfers);
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,12 +69,30 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
                   ),
                 ),
                 _buildTransactionSection('Transfers', transfers),
+                _buildBalanceSection(
+                    actualBalance, pendingBalance, settledBalance),
               ],
             );
           }
         },
       ),
     );
+  }
+
+  double calculateActualBalance(List<Transfer> transfers) {
+    return transfers.fold(0, (double sum, Transfer transfer) {
+      return sum + transfer.money;
+    });
+  }
+
+  double calculatePendingBalance(List<Transfer> transfers) {
+    // Add logic to calculate pending balance based on your requirements
+    return 0.0;
+  }
+
+  double calculateSettledBalance(List<Transfer> transfers) {
+    // Add logic to calculate settled balance based on your requirements
+    return 0.0;
   }
 
   Widget _buildTransactionSection(String title, List<Transfer> transfers) {
@@ -109,6 +130,28 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
             },
           ),
       ],
+    );
+  }
+
+  Widget _buildBalanceSection(
+      double actualBalance, double pendingBalance, double settledBalance) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Balance Summary',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 16),
+          Text('Actual Balance: $actualBalance'),
+          SizedBox(height: 8),
+          Text('Pending Balance: $pendingBalance'),
+          SizedBox(height: 8),
+          Text('Settled Balance: $settledBalance'),
+        ],
+      ),
     );
   }
 }
