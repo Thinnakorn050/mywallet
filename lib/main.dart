@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: Material3BottomNav(),
+      debugShowCheckedModeBanner: false, //close debug banner.
     );
   }
 }
