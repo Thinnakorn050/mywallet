@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mywallet/common_widgets/tran_builder.dart';
+import 'package:mywallet/form_page/tran_form_page.dart';
 import 'package:mywallet/models/account.dart';
 import 'package:mywallet/models/category.dart';
 import 'package:mywallet/models/transfer.dart';
-import 'package:mywallet/form_page/tran_form_page.dart';
 import 'package:mywallet/services/database_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,6 +33,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  Future<void> _exportToCSV() async {
+    await _databaseService.exportDataToCSV();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Data exported to CSV file.'),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -41,6 +48,12 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text('Home Page'),
           centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: _exportToCSV,
+              icon: Icon(Icons.file_download),
+            ),
+          ],
           bottom: TabBar(
             tabs: [
               Padding(
@@ -55,16 +68,14 @@ class _HomePageState extends State<HomePage> {
             TranBuilder(
               future: _getTransfers(),
               onEdit: (value) {
-                {
-                  Navigator.of(context)
-                      .push(
-                        MaterialPageRoute(
-                          builder: (_) => TranFormPage(tran: value),
-                          fullscreenDialog: true,
-                        ),
-                      )
-                      .then((_) => setState(() {}));
-                }
+                Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (_) => TranFormPage(tran: value),
+                        fullscreenDialog: true,
+                      ),
+                    )
+                    .then((_) => setState(() {}));
               },
               onDelete: _onTransferDelete,
             ),

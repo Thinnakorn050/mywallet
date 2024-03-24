@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:mywallet/models/account.dart';
 import 'package:mywallet/models/category.dart';
 import 'package:mywallet/models/transfer.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:csv/csv.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 class DatabaseService {
   // Singleton pattern
@@ -276,5 +281,41 @@ class DatabaseService {
         // Add other fields based on your Transfer model
       );
     });
+  }
+  Future<void> exportDataToCSV() async {
+    // Retrieve data from the database
+    List<Transfer> transfers = await tranferAll();
+
+    // Convert data to CSV format
+    List<List<dynamic>> csvData = [];
+    // Add header row
+    csvData.add(['ID', 'Money', 'Date', 'Memo', 'Account ID', 'Category ID']);
+    // Add data rows
+    transfers.forEach((transfer) {
+      csvData.add([
+        transfer.id,
+        transfer.money,
+        transfer.date.toString(),
+        transfer.memo,
+        transfer.accountId,
+        transfer.categoryId,
+      ]);
+    });
+
+    // Generate CSV string
+    String csvString = const ListToCsvConverter().convert(csvData);
+
+    // Get external storage directory
+    Directory? directory = await getExternalStorageDirectory();
+    if (directory != null) {
+      String filePath = '${directory.path}/transfers.csv';
+      // Write CSV data to file
+      File file = File(filePath);
+      await file.writeAsString(csvString);
+
+      print('CSV file exported to: $filePath');
+    } else {
+      print('Error: External storage directory not found.');
+    }
   }
 }
