@@ -8,7 +8,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 class DatabaseService {
   // Singleton pattern
   static final DatabaseService _databaseService = DatabaseService._internal();
@@ -282,25 +281,36 @@ class DatabaseService {
       );
     });
   }
+
   Future<void> exportDataToCSV() async {
+    //CSV file exported to: /storage/emulated/0/Android/data/com.example.mywallet/files/transfers.csv
+
     // Retrieve data from the database
     List<Transfer> transfers = await tranferAll();
 
     // Convert data to CSV format
     List<List<dynamic>> csvData = [];
     // Add header row
-    csvData.add(['ID', 'Money', 'Date', 'Memo', 'Account ID', 'Category ID']);
+    csvData.add(['ID', 'Money', 'Date', 'Memo', 'Account', 'Category']);
     // Add data rows
-    transfers.forEach((transfer) {
+    for (var transfer in transfers) {
+      Account acc = await accountOne(transfer.accountId);
+      Category cat = await categoryOne(transfer.categoryId);
+      String datetime = (transfer.date.day.toString() +
+          "-" +
+          transfer.date.month.toString() +
+          "-" +
+          transfer.date.year.toString());
+
       csvData.add([
         transfer.id,
         transfer.money,
-        transfer.date.toString(),
+        datetime,
         transfer.memo,
-        transfer.accountId,
-        transfer.categoryId,
+        acc.name,
+        cat.name,
       ]);
-    });
+    }
 
     // Generate CSV string
     String csvString = const ListToCsvConverter().convert(csvData);
