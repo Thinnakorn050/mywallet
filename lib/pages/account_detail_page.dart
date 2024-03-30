@@ -32,49 +32,55 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
       appBar: AppBar(
         title: Text('${widget.account!.name} Detail'),
       ),
-      body: FutureBuilder(
-        future: _transfers,
-        builder: (context, AsyncSnapshot<List<Transfer>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content:
-                          Text('Error loading transfers. Please try again.'),
-                    ),
-                  );
-                  _loadData(); // Retry on button press
-                },
-                child: Text('Retry'),
-              ),
-            );
-          } else {
-            final List<Transfer> transfers = snapshot.data!;
-            double actualBalance = calculateActualBalance(transfers);
-            double pendingBalance = calculatePendingBalance(transfers);
-            double settledBalance = calculateSettledBalance(transfers);
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Account Name: ${widget.account!.name}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: _transfers,
+          builder: (context, AsyncSnapshot<List<Transfer>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                            Text('Error loading transfers. Please try again.'),
+                      ),
+                    );
+                    _loadData(); // Retry on button press
+                  },
+                  child: Text('Retry'),
                 ),
-                _buildTransactionSection('Transfers', transfers),
-                _buildBalanceSection(
-                    actualBalance, pendingBalance, settledBalance),
-              ],
-            );
-          }
-        },
+              );
+            } else {
+              final List<Transfer> transfers = snapshot.data!;
+              double actualBalance = calculateActualBalance(transfers);
+              double pendingBalance = calculatePendingBalance(transfers);
+              double settledBalance = calculateSettledBalance(transfers);
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Account Name: ${widget.account!.name}',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  _buildTransactionSection('Transfers', transfers),
+                  _buildBalanceSection(
+                      actualBalance, pendingBalance, settledBalance),
+                  SizedBox(
+                      height:
+                          80), // Additional space for the button to avoid overlapping content
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -113,6 +119,8 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
         else
           ListView.builder(
             shrinkWrap: true,
+            physics:
+                NeverScrollableScrollPhysics(), // Prevents the ListView from scrolling
             itemCount: transfers.length,
             itemBuilder: (context, index) {
               final transfer = transfers[index];
