@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Home Page'),
+          title: Text('Home'),
           centerTitle: true,
           actions: [
             IconButton(
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
             tabs: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('Trans'),
+                child: Text('Transfer'),
               ),
             ],
           ),

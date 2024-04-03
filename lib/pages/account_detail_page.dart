@@ -26,6 +26,11 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
     _transfers = _databaseService.transfersByAccountId(widget.account!.id!);
   }
 
+  Future<String> GetcategoryName(int ID) async {
+    var temp = await _databaseService.categoryOne(ID);
+    return temp.name;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,8 +61,6 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
             } else {
               final List<Transfer> transfers = snapshot.data!;
               double actualBalance = calculateActualBalance(transfers);
-              double pendingBalance = calculatePendingBalance(transfers);
-              double settledBalance = calculateSettledBalance(transfers);
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,12 +73,10 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
+                  _buildBalanceSection(actualBalance),
+                  SizedBox(height: 15),
                   _buildTransactionSection('Transfers', transfers),
-                  _buildBalanceSection(
-                      actualBalance, pendingBalance, settledBalance),
-                  SizedBox(
-                      height:
-                          80), // Additional space for the button to avoid overlapping content
+                  // Additional space for the button to avoid overlapping content
                 ],
               );
             }
@@ -89,16 +90,6 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
     return transfers.fold(0, (double sum, Transfer transfer) {
       return sum + transfer.money;
     });
-  }
-
-  double calculatePendingBalance(List<Transfer> transfers) {
-    // Add logic to calculate pending balance based on your requirements
-    return 0.0;
-  }
-
-  double calculateSettledBalance(List<Transfer> transfers) {
-    // Add logic to calculate settled balance based on your requirements
-    return 0.0;
   }
 
   Widget _buildTransactionSection(String title, List<Transfer> transfers) {
@@ -125,15 +116,30 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
             itemBuilder: (context, index) {
               final transfer = transfers[index];
 
-              return Column(
-                children: [
-                  ListTile(
-                    title: Text('Money: ${transfer.money}'),
-                    subtitle: Text('Date: ${transfer.date}'),
-                    // Add more details based on your Transfer model
-                  ),
-                  if (index < transfers.length - 1) Divider(),
-                ],
+              return FutureBuilder<String>(
+                future: GetcategoryName(transfer.categoryId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    final categoryName = snapshot.data;
+
+                    return Column(
+                      children: [
+                        ListTile(
+                          title: Text('Money: ${transfer.money}'),
+                          subtitle: Text(
+                              'Date: ${transfer.date.day}-${transfer.date.month}-${transfer.date.year}'
+                              '  Category: $categoryName'
+                              '  Memo: ${transfer.memo}'),
+                        ),
+                        if (index < transfers.length - 1) Divider(),
+                      ],
+                    );
+                  }
+                },
               );
             },
           ),
@@ -141,8 +147,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
     );
   }
 
-  Widget _buildBalanceSection(
-      double actualBalance, double pendingBalance, double settledBalance) {
+  Widget _buildBalanceSection(double actualBalance) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -153,11 +158,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16),
-          Text('Actual Balance: $actualBalance'),
-          SizedBox(height: 8),
-          Text('Pending Balance: $pendingBalance'),
-          SizedBox(height: 8),
-          Text('Settled Balance: $settledBalance'),
+          Text('Balance : $actualBalance'),
         ],
       ),
     );
