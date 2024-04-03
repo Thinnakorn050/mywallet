@@ -18,7 +18,7 @@ class _Material3BottomNavState extends State<Material3BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('My Wallet App')),
+      appBar: AppBar(title: const Text('My Wallet')),
       body: _getPage(_selectedIndex),
       bottomNavigationBar: NavigationBar(
         animationDuration: const Duration(seconds: 1),
