@@ -2,5 +2,6 @@
     "cmake.sourceDirectory": "D:/wallet/mywallet/linux",
     "cSpell.words": [
         "tranfer"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
