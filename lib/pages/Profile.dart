@@ -37,7 +37,7 @@ class _ProfileState extends State<Profile> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Profile'),
+          title: Text('Profile_page'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
