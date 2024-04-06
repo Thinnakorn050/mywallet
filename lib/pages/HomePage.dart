@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mywallet/common_widgets/tran_builder.dart';
 import 'package:mywallet/form_page/tran_form_page.dart';
@@ -41,17 +40,6 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  Future<void> _openFileManager() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      String? filePath = result.files.single.path;
-      // Handle the file path as needed, for example, print it
-      print('File path: $filePath');
-    } else {
-      // User canceled the picker
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -64,10 +52,6 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               onPressed: _exportToCSV,
               icon: Icon(Icons.file_download),
-            ),
-            IconButton(
-              onPressed: _openFileManager,
-              icon: Icon(Icons.folder_open),
             ),
           ],
           bottom: TabBar(
