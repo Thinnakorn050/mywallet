@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _exportToCSV() async {
     await _databaseService.exportDataToCSV();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Data exported to CSV file.'),
+      content: Text('Exported to : /Download/transfers.csv'),
     ));
   }
 

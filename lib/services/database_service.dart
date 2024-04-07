@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class DatabaseService {
   // Singleton pattern
@@ -284,7 +285,7 @@ class DatabaseService {
 
   Future<void> exportDataToCSV() async {
     //CSV file exported to: /storage/emulated/0/Android/data/com.example.mywallet/files/transfers.csv
-
+    Permission.storage.request();
     // Retrieve data from the database
     List<Transfer> transfers = await tranferAll();
 
@@ -318,12 +319,12 @@ class DatabaseService {
     // Get external storage directory
     Directory? directory = await getExternalStorageDirectory();
     if (directory != null) {
-      String filePath = '${directory.path}/transfers.csv';
+      String filePath = '/storage/emulated/0/Download/transfers.csv';
       // Write CSV data to file
       File file = File(filePath);
       await file.writeAsString(csvString);
 
-      print('CSV file exported to: $filePath');
+      print('CSV file exported to: /Download/transfers.csv');
     } else {
       print('Error: External storage directory not found.');
     }

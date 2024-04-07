@@ -156,8 +156,21 @@ class _TranFormPageState extends State<TranFormPage> {
                     _isExpense = !_isExpense;
                   });
                 },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.resolveWith<Color>((states) {
+                    if (_isExpense) {
+                      // Return red color if _isExpense is true
+                      return Colors.red;
+                    } else {
+                      // Return green color if _isExpense is false
+                      return Colors.green;
+                    }
+                  }),
+                ),
                 child: Text(_isExpense ? 'Expense' : 'Income'),
               ),
+
               const SizedBox(height: 16.0),
               TextField(
                 controller: _moneyController,
