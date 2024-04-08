@@ -75,7 +75,7 @@ class CategoryBuilder extends StatelessWidget {
                 width: 40.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey[200],
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
                 alignment: Alignment.center,
                 child: Icon(Icons.edit, color: Colors.orange[800]),
