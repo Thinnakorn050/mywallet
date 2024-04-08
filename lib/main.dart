@@ -30,22 +30,22 @@ class MyApp extends StatelessWidget {
               .black, // Text/icons on top of secondary color (light green)
           onSurface: Colors.white, // Text/icons on top of the surface color
           onError: Colors.white, // Text/icons on top of error color
-        ),   
+        ),
         iconTheme: IconThemeData(
-  color: Colors.white, // Light color for better visibility against dark theme
-),
+          color: Colors
+              .white, // Light color for better visibility against dark theme
+        ),
         appBarTheme: AppBarTheme(
-           color: Color.fromARGB(255, 23, 29, 18), // Dark green top screen
-           iconTheme: IconThemeData(
-           color: Colors.white, // Change to white for better visibility
+          color: Color.fromARGB(255, 23, 29, 18), // Dark green top screen
+          iconTheme: IconThemeData(
+            color: Colors.white, // Change to white for better visibility
           ),
-           titleTextStyle: TextStyle(
-           color: Color.fromARGB(255, 255, 255, 255),
-           fontSize: 20.0,
-           fontWeight: FontWeight.bold,
+          titleTextStyle: TextStyle(
+            color: Color.fromARGB(255, 255, 255, 255),
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
           ),
         ),
-
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: Color.fromARGB(255, 69, 178, 26),
           selectedItemColor: Color.fromARGB(255, 2, 42,

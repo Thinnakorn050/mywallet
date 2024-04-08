@@ -67,6 +67,10 @@ class _AccountFormPageState extends State<AccountFormPage> {
               height: 45.0,
               child: ElevatedButton(
                 onPressed: _onSave,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, // Background color
+                  foregroundColor: Colors.white, // Text color
+                ),
                 child: Text(
                   widget.account != null
                       ? 'Update Account'
@@ -79,21 +83,22 @@ class _AccountFormPageState extends State<AccountFormPage> {
             ),
             SizedBox(height: 16.0),
             SizedBox(
-             height: 45.0,
-             child: ElevatedButton(
-             onPressed: _onCancel,
-             style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: Color.fromARGB(255, 227, 25, 25), // Text color
-    ),
-    child: Text(
-      'Cancel',
-      style: TextStyle(
-        fontSize: 16.0,
-      ),
-    ),
-  ),
-),
-
+              height: 45.0,
+              child: ElevatedButton(
+                onPressed: _onCancel,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Color.fromARGB(255, 227, 25, 25), // Background color
+                  foregroundColor: Colors.white, // Text color
+                ),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

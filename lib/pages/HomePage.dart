@@ -42,7 +42,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _openFileManager() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(initialDirectory: '/storage/emulated/0/Download/');
     if (result != null) {
       String? filePath = result.files.single.path;
       // Handle the file path as needed, for example, print it

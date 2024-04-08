@@ -67,6 +67,10 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
               height: 45.0,
               child: ElevatedButton(
                 onPressed: _onSave,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, // Background color
+                  foregroundColor: Colors.white, // Text color
+                ),
                 child: Text(
                   widget.category != null
                       ? 'Update Category'
@@ -82,6 +86,11 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
               height: 45.0,
               child: ElevatedButton(
                 onPressed: _onCancel,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Color.fromARGB(255, 227, 25, 25), // Background color
+                  foregroundColor: Colors.white, // Text color
+                ),
                 child: Text(
                   'Cancel',
                   style: TextStyle(

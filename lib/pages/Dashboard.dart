@@ -51,19 +51,21 @@ class _DashboardState extends State<Dashboard> {
               itemBuilder: (context, index) {
                 final account = accounts[index];
                 final sum = sums[account.id] ?? 0;
-                final color = sum >= 0 ? theme.colorScheme.secondary : theme.colorScheme.error;
+                final color = sum >= 0
+                    ? theme.colorScheme.secondary
+                    : theme.colorScheme.error;
 
                 return Card(
                   margin: EdgeInsets.all(8.0),
                   child: ListTile(
                     leading: Icon(
-                      Icons.account_balance_wallet, // Consider dynamically changing this icon based on account type
+                      Icons
+                          .account_balance_wallet, // Consider dynamically changing this icon based on account type
                       size: 30.0,
                       color: color,
                     ),
                     title: Text(
                       account.name,
-                      style: theme.textTheme.subtitle1,
                     ),
                     subtitle: Text(
                       'Total: $sum',

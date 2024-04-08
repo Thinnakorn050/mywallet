@@ -35,7 +35,7 @@ class _HistoryState extends State<History> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('History_page'),
+          title: Text('History'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
