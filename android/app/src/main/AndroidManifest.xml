@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
+=======
+>>>>>>> parent of 64001e1 (open file complete)
 =======
 >>>>>>> parent of 64001e1 (open file complete)
     <application
