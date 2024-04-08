@@ -79,7 +79,7 @@ class AccountBuilder extends StatelessWidget {
                 width: 40.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color.fromARGB(255, 56, 42, 42),
+                  color: Colors.grey[200],
                 ),
                 alignment: Alignment.center,
                 child: Icon(Icons.edit, color: Colors.orange[800]),

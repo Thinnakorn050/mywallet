@@ -8,101 +8,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My Wallet',
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.green,
-        colorScheme: ColorScheme.dark(
-          primary: Color.fromARGB(
-              255, 44, 123, 48), // A deep green for primary elements
-          secondary: const Color.fromARGB(
-              255, 101, 188, 105), // A lighter green for accents
-          surface: Color(
-              0xFF1E1E1E), // A dark surface for card widgets and UI backgrounds
-          background:
-              Color(0xFF121212), // A rich black for the main background color
-          onPrimary:
-              Colors.white, // Text/icons on top of primary color (deep green)
-          onSecondary: Colors
-              .black, // Text/icons on top of secondary color (light green)
-          onSurface: Colors.white, // Text/icons on top of the surface color
-          onError: Colors.white, // Text/icons on top of error color
-        ),   
-        iconTheme: IconThemeData(
-  color: Colors.white, // Light color for better visibility against dark theme
-),
-        appBarTheme: AppBarTheme(
-           color: Color.fromARGB(255, 23, 29, 18), // Dark green top screen
-           iconTheme: IconThemeData(
-           color: Colors.white, // Change to white for better visibility
-          ),
-           titleTextStyle: TextStyle(
-           color: Color.fromARGB(255, 255, 255, 255),
-           fontSize: 20.0,
-           fontWeight: FontWeight.bold,
-          ),
-        ),
-
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Color.fromARGB(255, 69, 178, 26),
-          selectedItemColor: Color.fromARGB(255, 2, 42,
-              4), // Chosen for visibility against the dark background
-          unselectedItemColor:
-              Colors.grey[500], // Ensures unselected items are still visible
-        ),
-        cardTheme: CardTheme(
-          color: Color(
-              0xFF2C2C2C), // A slightly lighter shade for cards to be distinguishable from the background
-          shadowColor: Colors.black54,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
-        textTheme: TextTheme(
-          headline6: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 255, 255, 255)),
-          subtitle1: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(134, 145, 135, 135)),
-          bodyText2: TextStyle(
-              fontSize: 14.0,
-              fontFamily: 'Hind',
-              color: Color.fromARGB(255, 236, 236, 236)),
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.green[400],
-          foregroundColor: Colors.black,
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Color(0xFF2C2C2C),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide.none, // Hide the border
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(color: Color.fromARGB(255, 0, 250, 129)),
-          ),
-          labelStyle: TextStyle(color: Colors.white70),
-        ),
-        useMaterial3: true,
-      ),
-      home: const Material3BottomNav(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-
-
-
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -118,8 +29,15 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-
-
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 58, 154, 183)),
+        useMaterial3: true,
+      ),
+      home: Material3BottomNav(),
+      debugShowCheckedModeBanner: false, //close debug banner.
+    );
+  }
+}
 //อันนี้ยังไม่ได้ใช้นะ
 // class MyHomePage extends StatefulWidget {
 //   const MyHomePage({super.key, required this.title});
