@@ -79,22 +79,17 @@ class _AccountFormPageState extends State<AccountFormPage> {
             ),
             SizedBox(height: 16.0),
             SizedBox(
-             height: 45.0,
-             child: ElevatedButton(
-             onPressed: _onCancel,
-             style: ElevatedButton.styleFrom(
-            primary: Color.fromARGB(255, 227, 25, 25), // Background color
-            onPrimary: Colors.white, // Text color
-    ),
-    child: Text(
-      'Cancel',
-      style: TextStyle(
-        fontSize: 16.0,
-      ),
-    ),
-  ),
-),
-
+              height: 45.0,
+              child: ElevatedButton(
+                onPressed: _onCancel,
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
