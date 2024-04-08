@@ -3,8 +3,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    
 
 =======
 >>>>>>> parent of 64001e1 (open file complete)
@@ -13,7 +16,7 @@
 =======
 >>>>>>> parent of 64001e1 (open file complete)
     <application
-        android:label="mywallet"
+        android:label="My Wallet"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
