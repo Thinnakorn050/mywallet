@@ -83,8 +83,7 @@ class _AccountFormPageState extends State<AccountFormPage> {
              child: ElevatedButton(
              onPressed: _onCancel,
              style: ElevatedButton.styleFrom(
-            primary: Color.fromARGB(255, 227, 25, 25), // Background color
-            onPrimary: Colors.white, // Text color
+            foregroundColor: Colors.white, backgroundColor: Color.fromARGB(255, 227, 25, 25), // Text color
     ),
     child: Text(
       'Cancel',
