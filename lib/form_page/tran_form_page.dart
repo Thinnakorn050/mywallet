@@ -29,20 +29,16 @@ class _TranFormPageState extends State<TranFormPage> {
   DateTime _selectedDate = DateTime.now(); // Initialize with current date
   bool initAcc = false;
   bool initCat = false;
-  bool _isExpense = false; // Track whether it's an expense or income
 
   @override
   void initState() {
     super.initState();
 
-    // Update
+    //update
     if (widget.tran != null) {
       _nameController.text = widget.tran!.memo;
-      _moneyController.text =
-          widget.tran!.money.abs().toString(); // Ensure positive value
+      _moneyController.text = widget.tran!.money.toString();
       _selectedDate = widget.tran!.date;
-      // Check if it's an expense or income
-      _isExpense = widget.tran!.money < 0;
     }
   }
 
@@ -75,7 +71,7 @@ class _TranFormPageState extends State<TranFormPage> {
   }
 
   Future<void> _onSave() async {
-    // Check for money input
+    //check for money input
     if (_moneyController.text.isEmpty) {
       setState(() {
         _moneyErrorText = 'Cannot be empty';
@@ -83,7 +79,7 @@ class _TranFormPageState extends State<TranFormPage> {
       return;
     }
 
-    // Check for number only money input
+    //check for number only money input
     final RegExp numberRegex = RegExp(r'^-?[0-9]+$');
     if (!numberRegex.hasMatch(_moneyController.text)) {
       setState(() {
@@ -95,8 +91,7 @@ class _TranFormPageState extends State<TranFormPage> {
     // Reset error text
     //setState(() {_moneyErrorText = null; });
 
-    final money =
-        int.parse(_moneyController.text.trim()) * (_isExpense ? -1 : 1);
+    final money = int.parse(_moneyController.text.trim());
     final date = _selectedDate;
     final memo =
         _nameController.text.trim(); // Use the value from the TextField
@@ -149,29 +144,6 @@ class _TranFormPageState extends State<TranFormPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(height: 30.0),
-              // Button to toggle between expense and income
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _isExpense = !_isExpense;
-                  });
-                },
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.resolveWith<Color>((states) {
-                    if (_isExpense) {
-                      // Return red color if _isExpense is true
-                      return Colors.red;
-                    } else {
-                      // Return green color if _isExpense is false
-                      return Colors.green;
-                    }
-                  }),
-                ),
-                child: Text(_isExpense ? 'Expense' : 'Income'),
-              ),
-
-              const SizedBox(height: 16.0),
               TextField(
                 controller: _moneyController,
                 decoration: InputDecoration(
