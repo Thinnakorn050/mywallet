@@ -14,38 +14,82 @@ class Material3BottomNav extends StatefulWidget {
 
 class _Material3BottomNavState extends State<Material3BottomNav> {
   int _selectedIndex = 0;
+  final PageController _pageController = PageController();
+
+  // This getter for navigation bar items needs to be inside the state class
+  List<NavigationDestination> get _navBarItems {
+    return [
+      NavigationDestination(
+        icon: AnimatedNavigationBarIcon(
+          isSelected: _selectedIndex == 0,
+          icon: Icons.home_outlined,
+          selectedIcon: Icons.home,
+        ),
+        label: 'Home',
+      ),
+      NavigationDestination(
+        icon: AnimatedNavigationBarIcon(
+          isSelected: _selectedIndex == 1,
+          icon: Icons.bookmark_border_outlined,
+          selectedIcon: Icons.bookmark,
+        ),
+        label: 'Dashboard',
+      ),
+      NavigationDestination(
+        icon: AnimatedNavigationBarIcon(
+          isSelected: _selectedIndex == 2,
+          icon: Icons.shopping_bag_outlined,
+          selectedIcon: Icons.shopping_bag,
+        ),
+        label: 'History',
+      ),
+      NavigationDestination(
+        icon: AnimatedNavigationBarIcon(
+          isSelected: _selectedIndex == 3,
+          icon: Icons.person_outline_rounded,
+          selectedIcon: Icons.person,
+        ),
+        label: 'Profile',
+      ),
+    ];
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('My Wallet')),
-      body: _getPage(_selectedIndex),
+      body: PageView(
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(), // Disable swipe to change tabs
+        children: <Widget>[
+          HomeScreen(),
+          DashboardScreen(),
+          HistoryScreen(),
+          ProfileScreen(),
+        ],
+        onPageChanged: (index) {
+          setState(() => _selectedIndex = index);
+        },
+      ),
       bottomNavigationBar: NavigationBar(
-        animationDuration: const Duration(seconds: 1),
+        animationDuration: const Duration(milliseconds: 400),
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
+          );
         },
         destinations: _navBarItems,
       ),
     );
-  }
-
-  Widget _getPage(int index) {
-    switch (index) {
-      case 0:
-        return HomeScreen();
-      case 1:
-        return DashboardScreen();
-      case 2:
-        return HistoryScreen();
-      case 3:
-        return ProfileScreen();
-      default:
-        return Container();
-    }
   }
 }
 
@@ -86,26 +130,37 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-// Your existing navigation destination items
-const _navBarItems = [
-  NavigationDestination(
-    icon: Icon(Icons.home_outlined),
-    selectedIcon: Icon(Icons.home_rounded),
-    label: 'Home',
-  ),
-  NavigationDestination(
-    icon: Icon(Icons.bookmark_border_outlined),
-    selectedIcon: Icon(Icons.bookmark_rounded),
-    label: 'Dashboard',
-  ),
-  NavigationDestination(
-    icon: Icon(Icons.shopping_bag_outlined),
-    selectedIcon: Icon(Icons.shopping_bag),
-    label: 'History',
-  ),
-  NavigationDestination(
-    icon: Icon(Icons.person_outline_rounded),
-    selectedIcon: Icon(Icons.person_rounded),
-    label: 'Profile',
-  ),
-];
+// animation for clicking bottom bar kub
+class AnimatedNavigationBarIcon extends StatelessWidget {
+  final bool isSelected;
+  final IconData icon;
+  final IconData selectedIcon;
+
+  const AnimatedNavigationBarIcon({
+    Key? key,
+    required this.isSelected,
+    required this.icon,
+    required this.selectedIcon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 400),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return ScaleTransition(scale: animation, child: child);
+      },
+      child: isSelected
+          ? Icon(
+              selectedIcon,
+              key: UniqueKey(),
+              size: 35, // Size when selected
+            )
+          : Icon(
+              icon,
+              key: UniqueKey(),
+              size: 24, // Size when not selected
+            ),
+    );
+  }
+}

@@ -168,7 +168,13 @@ class _TranFormPageState extends State<TranFormPage> {
                     }
                   }),
                 ),
-                child: Text(_isExpense ? 'Expense' : 'Income'),
+                child: Text(
+                  _isExpense ? 'Expense' : 'Income',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                  ),
+                ),
               ),
 
               const SizedBox(height: 16.0),
@@ -237,6 +243,10 @@ class _TranFormPageState extends State<TranFormPage> {
                 height: 45.0,
                 child: ElevatedButton(
                   onPressed: _onSave,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green, // Background color
+                    foregroundColor: Colors.white, // Text color
+                  ),
                   child: const Text(
                     'Save',
                     style: TextStyle(
@@ -250,6 +260,11 @@ class _TranFormPageState extends State<TranFormPage> {
                 height: 45.0,
                 child: ElevatedButton(
                   onPressed: _onCancel,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Color.fromARGB(255, 227, 25, 25), // Background color
+                    foregroundColor: Colors.white, // Text color
+                  ),
                   child: const Text(
                     'Cancel',
                     style: TextStyle(

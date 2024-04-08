@@ -61,10 +61,6 @@ class TranBuilder extends StatelessWidget {
             Container(
               height: 40.0,
               width: 40.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey[200],
-              ),
               alignment: Alignment.center,
               child: Icon(Icons.bookmark_border_outlined),
             ),

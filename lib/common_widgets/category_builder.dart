@@ -43,10 +43,6 @@ class CategoryBuilder extends StatelessWidget {
             Container(
               height: 40.0,
               width: 40.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey[300],
-              ),
               alignment: Alignment.center,
               child: Text(
                 category.id.toString(),
