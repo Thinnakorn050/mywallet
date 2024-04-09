@@ -32,7 +32,7 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 1,
       child: Scaffold(
         appBar: AppBar(
           title: Text('History'),

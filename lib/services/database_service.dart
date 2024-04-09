@@ -21,7 +21,7 @@ class DatabaseService {
 
     //return new database
     _database = await _initDatabase();
-    print('555 create database');
+    print('return _database');
     return _database!;
   }
 
@@ -34,7 +34,7 @@ class DatabaseService {
     final path = join(databasePath, 'flutter_sqflite_database.db');
 
     //delete everytime program run
-    deleteDatabase(path);
+    //deleteDatabase(path);
 
     //then create
     return await openDatabase(
@@ -46,6 +46,7 @@ class DatabaseService {
   }
 
   Future<void> _onCreate(Database db, int version) async {
+    print('_onCreate database');
     await db.execute(
       'CREATE TABLE account(id INTEGER PRIMARY KEY, name TEXT)',
     );
@@ -69,7 +70,7 @@ class DatabaseService {
 
     //insert base data
     await db.execute(
-      'INSERT INTO account (name) VALUES ("💵Cash"), ("🟪SCB-Bank"), ("🟨KrungSri-Bank")',
+      'INSERT INTO account (name) VALUES ("💵Cash"), ("SCB-Bank"), ("SSS-Bank")',
     );
     await db.execute(
       'INSERT INTO category (name) VALUES ("💼Work"), ("🍛Food"), ("🛒Shopping")',
