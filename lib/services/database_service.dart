@@ -286,7 +286,7 @@ class DatabaseService {
 
   Future<void> exportDataToCSV() async {
     //CSV file exported to: /storage/emulated/0/Android/data/com.example.mywallet/files/transfers.csv
-    Permission.storage.request();
+    await Permission.storage.request();
     // Retrieve data from the database
     List<Transfer> transfers = await tranferAll();
 
@@ -320,12 +320,12 @@ class DatabaseService {
     // Get external storage directory
     Directory? directory = await getExternalStorageDirectory();
     if (directory != null) {
-      String filePath = '/storage/emulated/0/Download/transfers.csv';
+      String filePath = '${directory.path}/transfers.csv';
       // Write CSV data to file
       File file = File(filePath);
       await file.writeAsString(csvString);
 
-      print('CSV file exported to: /Download/transfers.csv');
+      print('CSV file exported to: $filePath');
     } else {
       print('Error: External storage directory not found.');
     }
