@@ -84,7 +84,7 @@ class _TranFormPageState extends State<TranFormPage> {
     }
 
     // Check for number only money input
-    final RegExp numberRegex = RegExp(r'^-?[0-9]+$');
+    final RegExp numberRegex = RegExp(r'^\d+$');
     if (!numberRegex.hasMatch(_moneyController.text)) {
       setState(() {
         _moneyErrorText = 'Please enter a valid number';
