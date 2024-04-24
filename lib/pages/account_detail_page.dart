@@ -129,11 +129,22 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
                     return Column(
                       children: [
                         ListTile(
-                          title: Text('Money: ${transfer.money}'),
-                          subtitle: Text(
-                              'Date: ${transfer.date.day}-${transfer.date.month}-${transfer.date.year}'
-                              '  Category: $categoryName'
-                              '  Memo: ${transfer.memo}'),
+                          title: Text(
+                            '${transfer.date.day}-${transfer.date.month}-${transfer.date.year}'
+                            '  Category: $categoryName'
+                            '  Memo: ${transfer.memo}',
+                            style: TextStyle(
+                                fontSize: 16), // Adjust the font size as needed
+                          ),
+                          trailing: Text(
+                            '${transfer.money}',
+                            style: TextStyle(
+                              fontSize: 16, // Adjust the font size as needed
+                              color: transfer.money < 0
+                                  ? Colors.red
+                                  : Colors.green,
+                            ),
+                          ),
                         ),
                         if (index < transfers.length - 1) Divider(),
                       ],
